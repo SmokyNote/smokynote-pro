@@ -2,5 +2,7 @@
 <resources>
 
     <style name="Theme.Styled" parent="Theme.Sherlock.Light">
+        <item name="buttonBarStyle">@android:style/ButtonBar</item>
+        <item name="buttonBarButtonStyle">@android:style/Widget.Button</item>
     </style>
 </resources>
