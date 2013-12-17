@@ -1,0 +1,133 @@
+# Having troubles with ProGuard? Start with uncommenting two lines below:
+#-dontobfuscate
+#-dontoptimize
+
+-verbose
+-dontusemixedcaseclassnames
+
+-optimizationpasses 10
+-dontpreverify
+-allowaccessmodification
+
+-adaptresourcefilenames    **.properties,**.gif,**.jpg,**.png
+-adaptresourcefilecontents **.properties,META-INF/MANIFEST.MF
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class com.android.vending.licensing.ILicensingService
+
+-keep public class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+    public void set*(...);
+}
+
+# Keep Fragments.
+-keep,allowoptimization class com.lumoza.** extends com.actionbarsherlock.app.SherlockFragment
+-keep,allowobfuscation,allowoptimization class com.lumoza.** extends com.actionbarsherlock.app.SherlockFragment { *; }
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+# ORMLite support
+-keep class * extends com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
+-keepclassmembers class * extends com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper {
+    public <init>(android.content.Context);
+}
+-keep class com.j256.**
+-keepclassmembers class com.j256.** {
+    *;
+}
+
+# Action Bar Sherlock support
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class com.actionbarsherlock.** { *; }
+-keep interface com.actionbarsherlock.** { *; }
+
+
+# Annotations support
+-keepattributes *Annotation*
+
+# Generics support
+-keepattributes Signature
+
+# Serialization support
+-keepnames class * implements java.io.Serializable
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient <fields>;
+    !private <fields>;
+    !private <methods>;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+# adding this in to preserve line numbers so that the stack traces
+# can be remapped
+#-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
+-assumenosideeffects class android.util.Log { *; }
+-assumenosideeffects interface org.slf4j.** { *; }
+-assumenosideeffects class org.slf4j.** { *; }
+
+-assumenosideeffects class java.lang.String {
+    public *** format(...);
+}
+
+-assumenosideeffects class * {
+    public java.lang.String toString();
+}
+
+# Remove validations. They are useful in debug, not release.
+-assumenosideeffects class dagger.internal.ProblemDetector { *; }
+
+-keep class * extends dagger.internal.Binding
+-keep class * extends dagger.internal.ModuleAdapter
+-keepclasseswithmembers,allowobfuscation class * {
+  @dagger.Provides <methods>;
+}
+
+-keep,allowobfuscation @javax.inject.Singleton public class *
+-keepclassmembers,allowobfuscation class * {
+    @javax.inject.Inject <fields>;
+    @javax.inject.Inject <init>(...);
+    <init>();
+}
