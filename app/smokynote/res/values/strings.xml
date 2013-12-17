@@ -2,4 +2,6 @@
 <resources>
 
     <string name="app_name">SmokyNote</string>
+
+    <string name="action_add_note">Record note</string>
 </resources>

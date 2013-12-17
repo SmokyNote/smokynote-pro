@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:divider="?android:attr/dividerHorizontal"
+              android:showDividers="middle">
+
+    <fragment
+            android:name="com.smokynote.NotesListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    <LinearLayout
+            style="?buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <Button
+                style="?buttonBarButtonStyle"
+                android:id="@+id/add_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="54dip"
+                android:text="@string/action_add_note"/>
+    </LinearLayout>
+
+</LinearLayout>

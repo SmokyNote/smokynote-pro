@@ -11,6 +11,13 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 public class NotesListActivity extends SherlockFragmentActivity {
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.notes_list_activity);
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
