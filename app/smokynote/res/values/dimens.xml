@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="buttonbar_height">48dp</dimen>
+    <dimen name="buttonbar_height">54dp</dimen>
 </resources>
