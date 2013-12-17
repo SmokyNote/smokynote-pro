@@ -29,8 +29,8 @@
 }
 
 # Keep Fragments.
--keep,allowoptimization class com.lumoza.** extends com.actionbarsherlock.app.SherlockFragment
--keep,allowobfuscation,allowoptimization class com.lumoza.** extends com.actionbarsherlock.app.SherlockFragment { *; }
+-keep,allowoptimization class com.smokynote.** extends com.actionbarsherlock.app.SherlockFragment
+-keep,allowobfuscation,allowoptimization class com.smokynote.** extends com.actionbarsherlock.app.SherlockFragment { *; }
 
 -keepclasseswithmembernames class * {
     native <methods>;
