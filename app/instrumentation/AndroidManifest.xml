@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.smokynote.instrumentation"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+    <application>
+        <uses-library android:name="android.test.runner"/>
+    </application>
+
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+                     android:targetPackage="com.smokynote"
+                     android:label="Tests for SmokyNote"/>
+</manifest>
