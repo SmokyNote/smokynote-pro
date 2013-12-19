@@ -25,7 +25,7 @@
 
             <Button
                     style="?buttonBarButtonStyle"
-                    android:id="@+id/add_record"
+                    android:id="@+id/add_note"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/buttonbar_height"
                     android:textSize="20sp"

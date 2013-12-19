@@ -26,7 +26,7 @@
                 android:paddingRight="2dip" >
             <Button
                     style="?buttonBarButtonStyle"
-                    android:id="@+id/add_record"
+                    android:id="@+id/add_note"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

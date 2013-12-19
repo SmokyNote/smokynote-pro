@@ -16,6 +16,6 @@ public class NotesListActivityTest extends ActivityInstrumentationTestCase2<Note
     }
 
     public void testRecordButtonPresented() {
-        assertNotNull("Expected 'Record note' button to be presented", getActivity().findViewById(R.id.add_record));
+        assertNotNull("Expected 'Record note' button to be presented", getActivity().findViewById(R.id.add_note));
     }
 }
