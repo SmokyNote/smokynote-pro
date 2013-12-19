@@ -1,1 +1,1 @@
-[![Build Status](https://travis-ci.org/ratsam/smokynote-pro.png?branch=master)](https://travis-ci.org/ratsam/smokynote-pro)
+[![Build Status](https://travis-ci.org/SmokyNote/smokynote-pro.png?branch=master)](https://travis-ci.org/SmokyNote/smokynote-pro)
