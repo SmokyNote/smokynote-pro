@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Disabled/inactive -->
+    <item android:state_enabled="false"
+          android:drawable="@drawable/toggle_alarm_state_disabled"/>
+
+    <!-- Checked pressed -->
+    <item android:state_checked="true"
+          android:state_pressed="true"
+          android:drawable="@drawable/toggle_alarm_state_checked_pressed"/>
+    <!-- Checked -->
+    <item android:state_checked="true"
+          android:drawable="@drawable/toggle_alarm_state_checked"/>
+
+    <!-- Unchecked pressed -->
+    <item android:state_pressed="true"
+          android:drawable="@drawable/toggle_alarm_state_unchecked_pressed"/>
+    <!-- Unchecked (default) -->
+    <item android:drawable="@drawable/toggle_alarm_state_unchecked"/>
+</selector>
