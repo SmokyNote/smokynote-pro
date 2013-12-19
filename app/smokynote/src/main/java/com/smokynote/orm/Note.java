@@ -24,6 +24,9 @@ public class Note implements Serializable {
     @DatabaseField(canBeNull = false)
     private DateTime schedule;
 
+    @DatabaseField
+    private boolean enabled;
+
     @DatabaseField(canBeNull = false)
     private String filename;
 
@@ -49,6 +52,14 @@ public class Note implements Serializable {
 
     public void setSchedule(DateTime schedule) {
         this.schedule = schedule;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getFilename() {
