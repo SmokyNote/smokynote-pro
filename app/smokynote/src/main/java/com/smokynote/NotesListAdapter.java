@@ -9,6 +9,7 @@ import android.widget.ToggleButton;
 import com.smokynote.orm.Note;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +29,12 @@ public class NotesListAdapter extends BaseAdapter {
     public NotesListAdapter(Context context, List<Note> notes) {
         this.notes = new ArrayList<Note>(notes);
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void setNotes(Collection<Note> newNotes) {
+        notes.clear();
+        notes.addAll(newNotes);
+        notifyDataSetChanged();
     }
 
     @Override

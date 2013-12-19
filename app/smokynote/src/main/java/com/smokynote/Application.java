@@ -1,6 +1,8 @@
 package com.smokynote;
 
+import com.smokynote.dagger.NotesModule;
 import com.smokynote.dagger.SysModule;
+import com.smokynote.inject.Injector;
 import com.smokynote.orm.DatabaseHelper;
 import dagger.ObjectGraph;
 import org.slf4j.Logger;
@@ -13,7 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * @author Maksim Zakharov
  * @since 1.0
  */
-public class Application extends android.app.Application {
+public class Application extends android.app.Application implements Injector {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE");
 
@@ -25,6 +27,11 @@ public class Application extends android.app.Application {
 
     private ObjectGraph objectGraph;
     private DatabaseHelper databaseHelper;
+
+    @Override
+    public void inject(Object target) {
+        objectGraph.inject(target);
+    }
 
     @Override
     public void onCreate() {
@@ -40,12 +47,16 @@ public class Application extends android.app.Application {
 
         databaseHelper = new DatabaseHelper(this);
 
-        objectGraph = ObjectGraph.create(createSysModule());
+        objectGraph = ObjectGraph.create(createSysModule(), createNotesModule());
         objectGraph.validate();
     }
 
     private SysModule createSysModule() {
         return new SysModule(scheduledExecutorService, databaseHelper);
+    }
+
+    private NotesModule createNotesModule() {
+        return new NotesModule();
     }
 
     @Override
