@@ -2,12 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:showDividers="middle"
+              android:divider="?attr/dividerVertical"
+              android:dividerPadding="18dip">
 
     <include layout="@layout/toggle_alarm_button"/>
 
     <LinearLayout
-            android:layout_marginLeft="5dip"
+            android:layout_marginLeft="12dip"
+            android:layout_marginTop="6dip"
             android:orientation="vertical"
             android:layout_width="0dip"
             android:layout_weight="1"
@@ -16,6 +20,7 @@
         <TextView
                 android:id="@+id/note_schedule"
                 android:text="Schedule"
+                android:textAppearance="?android:textAppearanceLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
