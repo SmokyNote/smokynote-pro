@@ -3,6 +3,7 @@ package com.smokynote.note.impl;
 import com.smokynote.note.NotesRepository;
 import com.smokynote.orm.Note;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,8 +13,20 @@ import java.util.List;
  */
 public class NotesRepositoryImpl implements NotesRepository {
 
+    private List<Note> notes = new ArrayList<Note>();
+
     @Override
     public List<Note> getAll() {
-        return Collections.emptyList();
+        return Collections.unmodifiableList(notes);
+    }
+
+    @Override
+    public void add(Note note) {
+        notes.add(note);
+    }
+
+    @Override
+    public void clear() {
+        notes.clear();
     }
 }
