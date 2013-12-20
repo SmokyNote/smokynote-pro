@@ -51,6 +51,10 @@ public class Application extends android.app.Application implements Injector {
         objectGraph.validate();
     }
 
+    public <T> T getDependency(Class<T> dependencyClass) {
+        return objectGraph.get(dependencyClass);
+    }
+
     private SysModule createSysModule() {
         return new SysModule(scheduledExecutorService, databaseHelper);
     }

@@ -14,6 +14,10 @@ import javax.inject.Singleton;
  * @since 1.0
  */
 @Module(injects = {
+        // Classes to retrieve using dagger.ObjectGraph#get
+        NotesRepository.class,
+
+        // Actual classes to inject dependencies to
         NotesListFragment.class
 })
 public class NotesModule {
