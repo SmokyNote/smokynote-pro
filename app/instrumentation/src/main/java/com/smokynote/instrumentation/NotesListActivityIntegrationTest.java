@@ -5,12 +5,14 @@ import com.smokynote.*;
 import com.smokynote.R;
 
 /**
+ * Integration test for {@link NotesListActivity}.
+ *
  * @author Maksim Zakharov
  * @since 1.0
  */
-public class NotesListActivityTest extends ActivityInstrumentationTestCase2<NotesListActivity> {
+public class NotesListActivityIntegrationTest extends ActivityInstrumentationTestCase2<NotesListActivity> {
 
-    public NotesListActivityTest() {
+    public NotesListActivityIntegrationTest() {
         // Android 2.1 requires pkg to be presented.
         super("com.smokynote", NotesListActivity.class);
     }
