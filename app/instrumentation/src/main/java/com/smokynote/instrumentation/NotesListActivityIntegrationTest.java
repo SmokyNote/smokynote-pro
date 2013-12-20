@@ -1,6 +1,7 @@
 package com.smokynote.instrumentation;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.widget.ListView;
 import com.smokynote.Application;
 import com.smokynote.NotesListActivity;
@@ -35,19 +36,20 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
         application.onCreate();
     }
 
+    @SmallTest
     public void testRecordButtonPresented() {
         assertNotNull("Expected 'Record note' button to be presented", getActivity().findViewById(R.id.add_note));
     }
 
+    @SmallTest
     public void testNotesPresented() {
-        updateNotesRepository();
+        // Prepare repository before #getActivity() first call
+        prepareNotesRepository();
 
-        getInstrumentation().waitForIdleSync();
-
-        assertThat("Expected exactly one Note to be listed", listView().getChildCount(), equalTo(1));
+        assertThat("Expected exactly one Note to be listed", listView().getCount(), equalTo(1));
     }
 
-    private void updateNotesRepository() {
+    private void prepareNotesRepository() {
         final NotesRepository notesRepository = application.getDependency(NotesRepository.class);
         notesRepository.clear();
         notesRepository.add(createTestNote());
