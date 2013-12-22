@@ -76,6 +76,12 @@ public class NotesListAdapter extends BaseAdapter {
     }
 
     private void bindToggleButton(ToggleButton button, Note note) {
-        button.setChecked(note.isEnabled());
+        if (note.getSchedule().isBeforeNow()) {
+            button.setChecked(false);
+            button.setEnabled(false);
+        } else {
+            button.setEnabled(true);
+            button.setChecked(note.isEnabled());
+        }
     }
 }
