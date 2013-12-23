@@ -16,6 +16,8 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
 
+        <item name="actionBarSize">50dip</item>
+        <item name="android:actionBarSize">50dip</item>
         <item name="actionBarStyle">@style/Widget.ActionBar.DialogLike</item>
         <item name="android:actionBarStyle">@style/Widget.ActionBar.DialogLike</item>
         <item name="actionButtonStyle">@style/Widget.ActionButton.DialogLike</item>

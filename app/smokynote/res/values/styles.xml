@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.ActionBar.DialogLike" parent="Widget.Sherlock.ActionBar">
-        <item name="android:height">50dip</item>
-        <item name="height">50dip</item>
-    </style>
+    <style name="Widget.ActionBar.DialogLike" parent="Widget.Sherlock.ActionBar"/>
 
     <style name="Widget.ActionButton.DialogLike" parent="Widget.Sherlock.ActionButton">
         <item name="android:background">@drawable/item_background_dialoglike</item>
