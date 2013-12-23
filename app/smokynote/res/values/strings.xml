@@ -4,4 +4,8 @@
     <string name="app_name">SmokyNote</string>
 
     <string name="action_add_note">Record note</string>
+
+    <string name="recording_title">Recording</string>
+    <string name="recording_cancel">Cancel</string>
+    <string name="recording_submit">Done</string>
 </resources>

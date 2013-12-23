@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <View
+            android:layout_width="180dip"
+            android:layout_height="180dip"
+            android:layout_margin="5dip"
+            android:background="#bbb"/>
+
+    <LinearLayout android:id="@+id/buttonPanel"
+                  android:layout_width="match_parent"
+                  android:layout_height="?buttonBarHeight"
+                  android:orientation="vertical">
+        <LinearLayout
+                style="?buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2.5"
+                android:gravity="center"
+                android:paddingTop="4dip"
+                android:paddingLeft="2dip"
+                android:paddingRight="2dip">
+            <Button
+                    style="?buttonBarButtonStyle"
+                    android:id="@+id/cancel"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="@string/recording_cancel"/>
+
+            <Button
+                    style="?buttonBarButtonStyle"
+                    android:id="@+id/submit"
+                    android:layout_width="0dip"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="@string/recording_submit"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

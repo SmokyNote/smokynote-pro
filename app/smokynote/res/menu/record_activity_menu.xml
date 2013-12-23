@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:icon="@drawable/abs__ic_cab_done_holo_light"
+          android:showAsAction="always|withText"
+          android:title="@string/recording_submit"/>
+</menu>
