@@ -4,6 +4,7 @@
     <style name="Theme.Styled" parent="Theme.Sherlock.Light">
         <item name="buttonBarStyle">@android:style/ButtonBar</item>
         <item name="buttonBarButtonStyle">@android:style/Widget.Button</item>
+        <item name="buttonBarHeight">@dimen/buttonbar_height</item>
     </style>
 
     <style name="Theme.Styled.DialogLike">
@@ -21,5 +22,9 @@
         <item name="android:actionButtonStyle">@style/Widget.ActionButton.DialogLike</item>
 
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Theme.Styled.NotesList">
+        <item name="buttonBarHeight">@dimen/buttonbar_height_large</item>
     </style>
 </resources>

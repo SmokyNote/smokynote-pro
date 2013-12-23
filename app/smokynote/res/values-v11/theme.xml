@@ -4,5 +4,6 @@
     <style name="Theme.Styled" parent="Theme.Sherlock.Light">
         <item name="buttonBarStyle">?android:attr/buttonBarStyle</item>
         <item name="buttonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+        <item name="buttonBarHeight">@dimen/buttonbar_height</item>
     </style>
 </resources>

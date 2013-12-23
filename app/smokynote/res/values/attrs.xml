@@ -4,5 +4,6 @@
     <declare-styleable name="SmokyNoteApp">
         <attr name="buttonBarStyle" format="reference"/>
         <attr name="buttonBarButtonStyle" format="reference"/>
+        <attr name="buttonBarHeight" format="dimension"/>
     </declare-styleable>
 </resources>

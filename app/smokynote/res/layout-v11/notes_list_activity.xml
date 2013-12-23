@@ -27,7 +27,7 @@
                     style="?buttonBarButtonStyle"
                     android:id="@+id/add_note"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/buttonbar_height"
+                    android:layout_height="?buttonBarHeight"
                     android:textSize="20sp"
                     android:text="@string/action_add_note"/>
         </LinearLayout>

@@ -12,7 +12,7 @@
 
     <LinearLayout android:id="@+id/buttonPanel"
                   android:layout_width="match_parent"
-                  android:layout_height="@dimen/buttonbar_height"
+                  android:layout_height="?buttonBarHeight"
                   android:orientation="vertical">
         <LinearLayout
                 style="?buttonBarStyle"
