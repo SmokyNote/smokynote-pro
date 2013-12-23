@@ -34,7 +34,7 @@ public class Application extends android.app.Application implements Injector {
     }
 
     @Override
-    public void onCreate() {
+    public synchronized void onCreate() {
         super.onCreate();
 
         initDependencyGraph();
@@ -43,12 +43,14 @@ public class Application extends android.app.Application implements Injector {
     }
 
     private void initDependencyGraph() {
-        LOG.info("Initializing ObjectGraph");
+        if (objectGraph == null) {
+            LOG.info("Initializing ObjectGraph");
 
-        databaseHelper = new DatabaseHelper(this);
+            databaseHelper = new DatabaseHelper(this);
 
-        objectGraph = ObjectGraph.create(createSysModule(), createNotesModule());
-        objectGraph.validate();
+            objectGraph = ObjectGraph.create(createSysModule(), createNotesModule());
+            objectGraph.validate();
+        }
     }
 
     public <T> T getDependency(Class<T> dependencyClass) {
