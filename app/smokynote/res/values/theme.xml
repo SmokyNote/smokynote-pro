@@ -5,4 +5,19 @@
         <item name="buttonBarStyle">@android:style/ButtonBar</item>
         <item name="buttonBarButtonStyle">@android:style/Widget.Button</item>
     </style>
+
+    <style name="Theme.Styled.DialogLike">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@drawable/dialog_full_holo_light</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+
+        <item name="actionBarStyle">@style/Widget.ActionBar.DialogLike</item>
+        <item name="android:actionBarStyle">@style/Widget.ActionBar.DialogLike</item>
+
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

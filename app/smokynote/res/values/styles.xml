@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.ActionBar.DialogLike" parent="Widget.Sherlock.ActionBar">
+        <item name="android:height">50dip</item>
+        <item name="height">50dip</item>
+    </style>
+</resources>
