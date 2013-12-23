@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:top="5dip">
+    <item android:top="10dip">
         <bitmap android:src="@drawable/ic_alarm_disabled" android:gravity="top|center_horizontal"/>
     </item>
 
-    <item android:bottom="5dip">
+    <item android:bottom="10dip">
         <bitmap android:src="@android:drawable/button_onoff_indicator_off" android:gravity="bottom|center_horizontal"/>
     </item>
 </layer-list>
