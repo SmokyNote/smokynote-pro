@@ -32,5 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".record.RecordActivity"
+                  android:label="@string/recording_title"
+                  android:theme="@style/Theme.Styled.DialogLike"
+                  android:noHistory="true"
+                  android:excludeFromRecents="true"/>
     </application>
 </manifest>
