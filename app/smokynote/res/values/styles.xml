@@ -5,4 +5,8 @@
         <item name="android:height">50dip</item>
         <item name="height">50dip</item>
     </style>
+
+    <style name="Widget.ActionButton.DialogLike" parent="Widget.Sherlock.ActionButton">
+        <item name="android:background">@drawable/item_background_dialoglike</item>
+    </style>
 </resources>
