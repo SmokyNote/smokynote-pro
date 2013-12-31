@@ -38,6 +38,10 @@ public class ImageIndicatorView extends View {
         super(context, attrs, defStyle);
 
         prepareGraphic(context, attrs, defStyle);
+
+        if (isInEditMode()) {
+            initEditMode();
+        }
     }
 
     protected void prepareGraphic(Context context, AttributeSet attrs, int defStyle) {
@@ -59,6 +63,13 @@ public class ImageIndicatorView extends View {
         if (drawable instanceof BitmapDrawable) {
             ((BitmapDrawable) drawable).setAntiAlias(true);
         }
+    }
+
+    /**
+     * Perform additional initialization for edit mode (inside IDE).
+     */
+    private void initEditMode() {
+        setLevel(7000);
     }
 
     @Override
