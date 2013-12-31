@@ -6,4 +6,9 @@
         <attr name="buttonBarButtonStyle" format="reference"/>
         <attr name="buttonBarHeight" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="ImageIndicatorView">
+        <attr name="android:src"/>
+        <attr name="android:background"/>
+    </declare-styleable>
 </resources>
