@@ -125,8 +125,8 @@ public class ImageIndicatorView extends View {
         int availableWidth = getWidth();
         int availableHeight = getHeight();
 
-        int x = availableWidth / 2;
-        int y = availableHeight / 2;
+        int centerX = availableWidth / 2;
+        int centerY = availableHeight / 2;
 
         final Drawable background = mBackground;
         final int w = background.getIntrinsicWidth();
@@ -141,12 +141,12 @@ public class ImageIndicatorView extends View {
         if (changed) {
             final int hw = w / 2;
             final int hh = h / 2;
-            background.setBounds(x - hw, y - hh, x + hw, y + hh);
-            src.setBounds(x - hw, y - hh, x + hw, y + hh);
+            background.setBounds(centerX - hw, centerY - hh, centerX + hw, centerY + hh);
+            src.setBounds(centerX - hw, centerY - hh, centerX + hw, centerY + hh);
         }
 
         canvas.save();
-        canvas.scale(scale, scale, x, y);
+        canvas.scale(scale, scale, centerX, centerY);
 
         background.draw(canvas);
         src.draw(canvas);
