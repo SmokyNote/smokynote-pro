@@ -1,5 +1,6 @@
 package com.smokynote.record;
 
+import android.app.Activity;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -47,13 +48,26 @@ public class RecordFragment extends SherlockFragment {
         setRetainInstance(true);
 
         ((Injector) getActivity().getApplication()).inject(this);
-
-        startRecording();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.record_fragment, container, false);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        final RecordListener listener = (RecordListener) activity;
+
+        try {
+            startRecording();
+        } catch (StorageUnavailableException e) {
+            listener.onStorageUnavailable();
+        } catch (RecordException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -79,7 +93,7 @@ public class RecordFragment extends SherlockFragment {
         indicatorUpdateFuture = scheduledExecutorService.scheduleAtFixedRate(levelIndicatorUpdater, 0, REFRESH_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
-    private void startRecording() {
+    private void startRecording() throws RecordException {
         createRecorder();
 
         final File recordFile = createRecordFile();
@@ -97,16 +111,15 @@ public class RecordFragment extends SherlockFragment {
         recorder.start();   // Recording is now started
     }
 
-    private File createRecordFile() {
+    private File createRecordFile() throws StorageUnavailableException {
         final File externalFilesDir = getExternalFilesDir();
         return new File(externalFilesDir, ".recording.3gp");
     }
 
-    private File getExternalFilesDir() {
+    private File getExternalFilesDir() throws StorageUnavailableException {
         final File externalFilesDir = ContextCompat.getExternalFilesDirs(getActivity(), "Notifications")[0];
         if (externalFilesDir == null) {
-            // TODO: return error
-            throw new RuntimeException();
+            throw new StorageUnavailableException();
         }
 
         if (!externalFilesDir.exists()) {

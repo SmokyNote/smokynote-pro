@@ -9,12 +9,18 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.smokynote.R;
 import com.smokynote.activity.DialogActivity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Maksim Zakharov
  * @since 1.0
  */
-public class RecordActivity extends DialogActivity {
+public class RecordActivity extends DialogActivity implements RecordListener {
+
+    private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.RECORD");
+
+    public static final int RESULT_STORAGE_UNAVAILABLE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,5 +103,12 @@ public class RecordActivity extends DialogActivity {
     private int convertPxToDip(int pixel){
         float scale = getResources().getDisplayMetrics().density;
         return (int) ((pixel / scale) + 0.5f);
+    }
+
+    @Override
+    public void onStorageUnavailable() {
+        LOG.warn("Storage unavailable");
+        setResult(RESULT_STORAGE_UNAVAILABLE);
+        finish();
     }
 }
