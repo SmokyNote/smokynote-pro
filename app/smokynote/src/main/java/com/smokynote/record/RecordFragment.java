@@ -10,13 +10,16 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.smokynote.R;
 import com.smokynote.inject.Injector;
+import com.smokynote.widget.ImageIndicatorView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Maksim Zakharov
@@ -26,10 +29,16 @@ public class RecordFragment extends SherlockFragment {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.RECORD");
 
+    /**
+     * Indicator refresh interval in ms.
+     */
+    private static final int REFRESH_INTERVAL = 100;
+
     @Inject
     /* private */ ScheduledExecutorService scheduledExecutorService;
 
     private MediaRecorder recorder;
+    private Future<?> indicatorUpdateFuture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,25 @@ public class RecordFragment extends SherlockFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.record_fragment, container, false);
+    }
+
+    @Override
+    public void onPause() {
+        if (indicatorUpdateFuture != null) {
+            indicatorUpdateFuture.cancel(true);
+        }
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        final ImageIndicatorView indicatorView = (ImageIndicatorView) getView().findViewById(R.id.volume_indicator);
+
+        final LevelIndicatorUpdater levelIndicatorUpdater = new LevelIndicatorUpdater(indicatorView, recorder);
+        indicatorUpdateFuture = scheduledExecutorService.scheduleAtFixedRate(levelIndicatorUpdater, 0, REFRESH_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
     private void startRecording() {
@@ -94,6 +122,7 @@ public class RecordFragment extends SherlockFragment {
     public void stopRecording() {
         LOG.info("Stop recording");
 
+        indicatorUpdateFuture.cancel(true);
         recorder.stop();
     }
 }
