@@ -2,7 +2,6 @@ package com.smokynote.record;
 
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +99,7 @@ public class RecordFragment extends SherlockFragment {
     }
 
     private File getExternalFilesDir() {
-        final File externalFilesDir = ContextCompat.getExternalFilesDirs(getActivity(), Environment.DIRECTORY_NOTIFICATIONS)[0];
+        final File externalFilesDir = ContextCompat.getExternalFilesDirs(getActivity(), "Notifications")[0];
         if (externalFilesDir == null) {
             // TODO: return error
             throw new RuntimeException();
