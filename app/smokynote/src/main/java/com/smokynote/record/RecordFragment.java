@@ -78,12 +78,29 @@ public class RecordFragment extends SherlockFragment {
     }
 
     private void startRecording() {
-        recorder = new MediaRecorder();
+        createRecorder();
 
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        final File recordFile = createRecordFile();
+        final String recordFileName = recordFile.getAbsolutePath();
 
+        LOG.info("Writing to file {}", recordFileName);
+        recorder.setOutputFile(recordFileName);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            throw new RuntimeException(e); // XXX mb show user-friendly message?
+        }
+
+        recorder.start();   // Recording is now started
+    }
+
+    private File createRecordFile() {
+        final File externalFilesDir = getExternalFilesDir();
+        return new File(externalFilesDir, ".recording.3gp");
+    }
+
+    private File getExternalFilesDir() {
         final File externalFilesDir = ContextCompat.getExternalFilesDirs(getActivity(), Environment.DIRECTORY_NOTIFICATIONS)[0];
         if (externalFilesDir == null) {
             // TODO: return error
@@ -97,19 +114,15 @@ public class RecordFragment extends SherlockFragment {
             }
         }
 
-        final File recordFile = new File(externalFilesDir, ".recording.3gp");
-        final String recordFileName = recordFile.getAbsolutePath();
+        return externalFilesDir;
+    }
 
-        LOG.info("Writing to file {}", recordFileName);
-        recorder.setOutputFile(recordFileName);
+    private void createRecorder() {
+        recorder = new MediaRecorder();
 
-        try {
-            recorder.prepare();
-        } catch (IOException e) {
-            throw new RuntimeException(e); // XXX mb show user-friendly message?
-        }
-
-        recorder.start();   // Recording is now started
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
     }
 
     @Override
