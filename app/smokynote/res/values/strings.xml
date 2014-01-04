@@ -8,4 +8,7 @@
     <string name="recording_title">Recording</string>
     <string name="recording_cancel">Cancel</string>
     <string name="recording_submit">Done</string>
+
+    <string name="record_error_storage_unavailable">Storage unavailable</string>
+    <string name="record_error_recorder_prepare_failed">Can\'t record audio</string>
 </resources>

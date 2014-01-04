@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.smokynote.record.RecordActivity;
@@ -13,6 +14,8 @@ import com.smokynote.record.RecordActivity;
  * @since 1.0
  */
 public class NotesListActivity extends SherlockFragmentActivity {
+
+    private static final int ACTIVITY_RECORD = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,36 @@ public class NotesListActivity extends SherlockFragmentActivity {
 
     private void launchRecordActivity() {
         final Intent intent = new Intent(this, RecordActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, ACTIVITY_RECORD);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ACTIVITY_RECORD:
+                handleRecordResult(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void handleRecordResult(int resultCode, Intent data) {
+        switch (resultCode) {
+            case RecordActivity.RESULT_STORAGE_UNAVAILABLE:
+                handleStorageUnavailable();
+                break;
+            case RecordActivity.RESULT_RECORDER_PREPARE_FAILED:
+                handleRecorderPrepareFailed();
+                break;
+        }
+    }
+
+    private void handleStorageUnavailable() {
+        Toast.makeText(this, R.string.record_error_storage_unavailable, Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleRecorderPrepareFailed() {
+        Toast.makeText(this, R.string.record_error_recorder_prepare_failed, Toast.LENGTH_SHORT).show();
     }
 }
