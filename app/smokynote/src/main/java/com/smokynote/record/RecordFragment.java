@@ -40,6 +40,9 @@ public class RecordFragment extends SherlockFragment {
     private MediaRecorder recorder;
     private Future<?> indicatorUpdateFuture;
 
+    private boolean recordingStarted = false;
+    private File recordFile;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +62,14 @@ public class RecordFragment extends SherlockFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        final RecordListener listener = (RecordListener) activity;
+        if (!recordingStarted) {
+            startRecording((RecordListener) activity);
+        }
+    }
 
+    private void startRecording(RecordListener listener) {
         try {
-            startRecording();
+            doStartRecording();
         } catch (StorageUnavailableException e) {
             listener.onStorageUnavailable();
         } catch (RecorderPrepareException e) {
@@ -95,10 +102,10 @@ public class RecordFragment extends SherlockFragment {
         indicatorUpdateFuture = scheduledExecutorService.scheduleAtFixedRate(levelIndicatorUpdater, 0, REFRESH_INTERVAL, TimeUnit.MILLISECONDS);
     }
 
-    private void startRecording() throws RecordException {
+    private void doStartRecording() throws RecordException {
         createRecorder();
 
-        final File recordFile = createRecordFile();
+        recordFile = createRecordFile();
         final String recordFileName = recordFile.getAbsolutePath();
 
         LOG.info("Writing to file {}", recordFileName);
@@ -110,7 +117,9 @@ public class RecordFragment extends SherlockFragment {
             throw new RecorderPrepareException(e);
         }
 
-        recorder.start();   // Recording is now started
+        recorder.start();
+
+        recordingStarted = true;
     }
 
     private File createRecordFile() throws StorageUnavailableException {
@@ -151,7 +160,13 @@ public class RecordFragment extends SherlockFragment {
     public void stopRecording() {
         LOG.info("Stop recording");
 
-        indicatorUpdateFuture.cancel(true);
-        recorder.stop();
+        if (indicatorUpdateFuture != null) {
+            indicatorUpdateFuture.cancel(true);
+        }
+
+        if (recordingStarted) {
+            recorder.stop();
+            recordFile.delete();
+        }
     }
 }
