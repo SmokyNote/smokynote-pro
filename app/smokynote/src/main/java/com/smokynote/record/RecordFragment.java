@@ -65,6 +65,8 @@ public class RecordFragment extends SherlockFragment {
             startRecording();
         } catch (StorageUnavailableException e) {
             listener.onStorageUnavailable();
+        } catch (RecorderPrepareException e) {
+            listener.onRecorderPrepareFailed();
         } catch (RecordException e) {
             throw new RuntimeException(e);
         }
@@ -105,7 +107,7 @@ public class RecordFragment extends SherlockFragment {
         try {
             recorder.prepare();
         } catch (IOException e) {
-            throw new RuntimeException(e); // XXX mb show user-friendly message?
+            throw new RecorderPrepareException(e);
         }
 
         recorder.start();   // Recording is now started
@@ -124,8 +126,7 @@ public class RecordFragment extends SherlockFragment {
 
         if (!externalFilesDir.exists()) {
             if (!externalFilesDir.mkdirs()) {
-                // TODO: return error
-                throw new RuntimeException();
+                throw new StorageUnavailableException();
             }
         }
 

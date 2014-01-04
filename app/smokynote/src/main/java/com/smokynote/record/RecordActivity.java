@@ -21,6 +21,7 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.RECORD");
 
     public static final int RESULT_STORAGE_UNAVAILABLE = 100;
+    public static final int RESULT_RECORDER_PREPARE_FAILED = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,13 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     public void onStorageUnavailable() {
         LOG.warn("Storage unavailable");
         setResult(RESULT_STORAGE_UNAVAILABLE);
+        finish();
+    }
+
+    @Override
+    public void onRecorderPrepareFailed() {
+        LOG.warn("Recorder prepare exception");
+        setResult(RESULT_RECORDER_PREPARE_FAILED);
         finish();
     }
 }

@@ -10,4 +10,9 @@ public interface RecordListener {
      * Recording can't be started because of unavailability of device storage.
      */
     void onStorageUnavailable();
+
+    /**
+     * Media recorder preparing failed.
+     */
+    void onRecorderPrepareFailed();
 }
