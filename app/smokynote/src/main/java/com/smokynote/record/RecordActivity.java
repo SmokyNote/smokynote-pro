@@ -1,5 +1,6 @@
 package com.smokynote.record;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.smokynote.R;
 import com.smokynote.activity.DialogActivity;
 import org.slf4j.Logger;
@@ -67,6 +69,14 @@ public class RecordActivity extends DialogActivity implements RecordListener {
                 cancel();
             }
         });
+
+        final Button submitButton = (Button) findViewById(R.id.submit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
     }
 
     @Override
@@ -78,6 +88,17 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.submit:
+                submit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         cancel();
 
@@ -85,6 +106,12 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     }
 
     private void cancel() {
+        finish();
+    }
+
+    private void submit() {
+        // TODO: finish recording, pass filename via Intent
+        setResult(Activity.RESULT_OK, null);
         finish();
     }
 
