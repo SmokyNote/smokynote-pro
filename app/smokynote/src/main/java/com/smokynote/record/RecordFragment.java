@@ -69,6 +69,10 @@ public class RecordFragment extends SherlockFragment {
     public void onResume() {
         super.onResume();
 
+        startIndicatorUpdater();
+    }
+
+    private void startIndicatorUpdater() {
         final ImageIndicatorView indicatorView = (ImageIndicatorView) getView().findViewById(R.id.volume_indicator);
 
         final LevelIndicatorUpdater levelIndicatorUpdater = new LevelIndicatorUpdater(indicatorView, recorder);
