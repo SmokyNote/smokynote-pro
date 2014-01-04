@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.smokynote.widget.ImageIndicatorView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/volume_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/level_indicator_background"
+        android:src="@drawable/level_indicator"
+        android:keepScreenOn="true"/>

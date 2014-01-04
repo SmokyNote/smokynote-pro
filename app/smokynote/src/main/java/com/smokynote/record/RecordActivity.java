@@ -1,6 +1,7 @@
 package com.smokynote.record;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,13 @@ public class RecordActivity extends DialogActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.record_activity);
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentById(R.id.record_fragment) == null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.record_fragment, new RecordFragment())
+                    .commit();
+        }
     }
 
     @Override

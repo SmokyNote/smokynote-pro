@@ -5,11 +5,11 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
-    <View
+    <FrameLayout
+            android:id="@+id/record_fragment"
             android:layout_width="180dip"
             android:layout_height="180dip"
-            android:layout_margin="5dip"
-            android:background="#bbb"/>
+            android:layout_margin="5dip"/>
 
     <LinearLayout android:id="@+id/buttonPanel"
                   android:layout_width="match_parent"
