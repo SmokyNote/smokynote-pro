@@ -1,13 +1,22 @@
 package com.smokynote.record;
 
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.smokynote.R;
+import com.smokynote.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @author Maksim Zakharov
@@ -17,16 +26,74 @@ public class RecordFragment extends SherlockFragment {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.RECORD");
 
+    @Inject
+    /* private */ ScheduledExecutorService scheduledExecutorService;
+
+    private MediaRecorder recorder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Important: retain fragment while record in progress.
         setRetainInstance(true);
+
+        if (scheduledExecutorService == null) {
+            ((Injector) getActivity().getApplication()).inject(this);
+            startRecording();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.record_fragment, container, false);
+    }
+
+    private void startRecording() {
+        recorder = new MediaRecorder();
+
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        final File externalFilesDir = ContextCompat.getExternalFilesDirs(getActivity(), Environment.DIRECTORY_NOTIFICATIONS)[0];
+        if (externalFilesDir == null) {
+            // TODO: return error
+            throw new RuntimeException();
+        }
+
+        if (!externalFilesDir.exists()) {
+            if (!externalFilesDir.mkdirs()) {
+                // TODO: return error
+                throw new RuntimeException();
+            }
+        }
+
+        final File recordFile = new File(externalFilesDir, ".recording.3gp");
+        final String recordFileName = recordFile.getAbsolutePath();
+
+        LOG.info("Writing to file {}", recordFileName);
+        recorder.setOutputFile(recordFileName);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            throw new RuntimeException(e); // XXX mb show user-friendly message?
+        }
+
+        recorder.start();   // Recording is now started
+    }
+
+    @Override
+    public void onDestroy() {
+        stopRecording();
+
+        super.onDestroy();
+    }
+
+    public void stopRecording() {
+        LOG.info("Stop recording");
+
+        recorder.stop();
     }
 }
