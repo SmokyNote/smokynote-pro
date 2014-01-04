@@ -47,10 +47,9 @@ public class RecordFragment extends SherlockFragment {
         // Important: retain fragment while record in progress.
         setRetainInstance(true);
 
-        if (scheduledExecutorService == null) {
-            ((Injector) getActivity().getApplication()).inject(this);
-            startRecording();
-        }
+        ((Injector) getActivity().getApplication()).inject(this);
+
+        startRecording();
     }
 
     @Override
