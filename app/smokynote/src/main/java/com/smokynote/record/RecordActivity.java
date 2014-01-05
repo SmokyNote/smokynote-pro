@@ -37,11 +37,11 @@ public class RecordActivity extends DialogActivity implements RecordListener {
         setContentView(R.layout.record_activity);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        recordFragment = (RecordFragment) fragmentManager.findFragmentById(R.id.record_fragment);
+        recordFragment = (RecordFragment) fragmentManager.findFragmentById(R.id.dialog_fragment);
         if (recordFragment == null) {
             recordFragment = new RecordFragment();
             fragmentManager.beginTransaction()
-                    .replace(R.id.record_fragment, recordFragment)
+                    .replace(R.id.dialog_fragment, recordFragment)
                     .commit();
         }
     }
