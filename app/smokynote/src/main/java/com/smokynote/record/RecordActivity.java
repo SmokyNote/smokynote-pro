@@ -34,7 +34,7 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.record_activity);
+        setContentView(R.layout.dialog_activity);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         recordFragment = (RecordFragment) fragmentManager.findFragmentById(R.id.dialog_fragment);
