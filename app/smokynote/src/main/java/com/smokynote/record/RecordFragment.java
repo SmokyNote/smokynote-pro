@@ -11,6 +11,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.smokynote.R;
 import com.smokynote.inject.Injector;
 import com.smokynote.widget.ImageIndicatorView;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,11 +82,16 @@ public class RecordFragment extends SherlockFragment {
 
     @Override
     public void onPause() {
-        if (indicatorUpdateFuture != null) {
-            indicatorUpdateFuture.cancel(true);
-        }
+        stopIndicatorUpdater();
 
         super.onPause();
+    }
+
+    private void stopIndicatorUpdater() {
+        if (indicatorUpdateFuture != null) {
+            indicatorUpdateFuture.cancel(true);
+            indicatorUpdateFuture = null;
+        }
     }
 
     @Override
@@ -105,7 +111,7 @@ public class RecordFragment extends SherlockFragment {
     private void doStartRecording() throws RecordException {
         createRecorder();
 
-        recordFile = createRecordFile();
+        recordFile = createTemporaryRecordFile();
         final String recordFileName = recordFile.getAbsolutePath();
 
         LOG.info("Writing to file {}", recordFileName);
@@ -122,9 +128,14 @@ public class RecordFragment extends SherlockFragment {
         recordingStarted = true;
     }
 
-    private File createRecordFile() throws StorageUnavailableException {
+    private File createTemporaryRecordFile() throws StorageUnavailableException {
         final File externalFilesDir = getExternalFilesDir();
         return new File(externalFilesDir, ".recording.3gp");
+    }
+
+    private File createPermanentRecordFile() throws StorageUnavailableException {
+        final File externalFilesDir = getExternalFilesDir();
+        return new File(externalFilesDir, DateTime.now().toString("'note-'Y-MM-dd_HH-mm-ss'.3gp'"));
     }
 
     private File getExternalFilesDir() throws StorageUnavailableException {
@@ -152,21 +163,43 @@ public class RecordFragment extends SherlockFragment {
 
     @Override
     public void onDestroy() {
-        stopRecording();
+        cancelRecording();
 
         super.onDestroy();
     }
 
-    public void stopRecording() {
+    public void cancelRecording() {
         LOG.info("Stop recording");
 
-        if (indicatorUpdateFuture != null) {
-            indicatorUpdateFuture.cancel(true);
-        }
+        stopIndicatorUpdater();
 
         if (recordingStarted) {
+            recordingStarted = false;
+
             recorder.stop();
+            recorder.release();
+
             recordFile.delete();
         }
+    }
+
+    /**
+     * Finish recording, rename temp file and return it's name.
+     *
+     * @return recorded file name
+     */
+    public String finishRecording() throws RecordSaveException, StorageUnavailableException {
+        stopIndicatorUpdater();
+        recordingStarted = false;
+
+        recorder.stop();
+        recorder.release();
+
+        final File permanentFile = createPermanentRecordFile();
+        if (!recordFile.renameTo(permanentFile)) {
+            throw new RecordSaveException();
+        }
+
+        return permanentFile.getAbsolutePath();
     }
 }

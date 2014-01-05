@@ -1,6 +1,6 @@
 package com.smokynote.record;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
@@ -22,8 +22,14 @@ public class RecordActivity extends DialogActivity implements RecordListener {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.RECORD");
 
+    public static final int RESULT_RECORDED = 10;
     public static final int RESULT_STORAGE_UNAVAILABLE = 100;
     public static final int RESULT_RECORDER_PREPARE_FAILED = 101;
+    public static final int RESULT_SAVE_ERROR = 102;
+
+    public static final String EXTRA_FILENAME = "fileName";
+
+    private RecordFragment recordFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +38,11 @@ public class RecordActivity extends DialogActivity implements RecordListener {
         setContentView(R.layout.record_activity);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentById(R.id.record_fragment) == null) {
+        recordFragment = (RecordFragment) fragmentManager.findFragmentById(R.id.record_fragment);
+        if (recordFragment == null) {
+            recordFragment = new RecordFragment();
             fragmentManager.beginTransaction()
-                    .replace(R.id.record_fragment, new RecordFragment())
+                    .replace(R.id.record_fragment, recordFragment)
                     .commit();
         }
     }
@@ -110,8 +118,23 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     }
 
     private void submit() {
-        // TODO: finish recording, pass filename via Intent
-        setResult(Activity.RESULT_OK, null);
+        final String fileName;
+        try {
+            fileName = recordFragment.finishRecording();
+        } catch (StorageUnavailableException e) {
+            setResult(RESULT_STORAGE_UNAVAILABLE);
+            finish();
+            return;
+        } catch (RecordSaveException e) {
+            setResult(RESULT_SAVE_ERROR);
+            finish();
+            return;
+        }
+
+        final Intent intent = new Intent();
+        intent.putExtra(EXTRA_FILENAME, fileName);
+        setResult(RESULT_RECORDED, intent);
+
         finish();
     }
 
