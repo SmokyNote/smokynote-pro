@@ -3,7 +3,6 @@ package com.smokynote.record;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import com.actionbarsherlock.app.ActionBar;
@@ -48,28 +47,13 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        initActionBar();
-
-        if (shouldUseActionsInsteadOfButtonBar()) {
-            hideButtonBar();
-        } else {
-            bindButtonBar();
-        }
-    }
-
-    private void initActionBar() {
+    protected void initActionBar() {
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE);
     }
 
-    private void hideButtonBar() {
-        findViewById(R.id.buttonPanel).setVisibility(View.GONE);
-    }
-
-    private void bindButtonBar() {
+    @Override
+    protected void bindButtonBar() {
         final Button cancelButton = (Button) findViewById(R.id.cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override

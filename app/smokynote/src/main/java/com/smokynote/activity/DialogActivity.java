@@ -2,6 +2,7 @@ package com.smokynote.activity;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.smokynote.R;
@@ -23,6 +24,23 @@ public abstract class DialogActivity extends SherlockFragmentActivity {
         }
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        initActionBar();
+
+        if (shouldUseActionsInsteadOfButtonBar()) {
+            hideButtonBar();
+        } else {
+            bindButtonBar();
+        }
+    }
+
+    protected abstract void initActionBar();
+
+    protected abstract void bindButtonBar();
+
     /**
      * On small screens we prefer to show action buttons as part of actionbar
      * rather then to acquire extra space for additional button bar.
@@ -39,5 +57,9 @@ public abstract class DialogActivity extends SherlockFragmentActivity {
     private int convertPxToDip(int pixel){
         float scale = getResources().getDisplayMetrics().density;
         return (int) ((pixel / scale) + 0.5f);
+    }
+
+    private void hideButtonBar() {
+        findViewById(R.id.buttonPanel).setVisibility(View.GONE);
     }
 }
