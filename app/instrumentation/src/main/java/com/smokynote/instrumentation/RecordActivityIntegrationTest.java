@@ -36,12 +36,12 @@ public class RecordActivityIntegrationTest extends ActivityInstrumentationTestCa
     @MediumTest
     public void testFragmentRetain() {
         final SherlockFragmentActivity activity = getActivity();
-        final Fragment portraitFragment = activity.getSupportFragmentManager().findFragmentById(R.id.record_fragment);
+        final Fragment portraitFragment = activity.getSupportFragmentManager().findFragmentById(R.id.dialog_fragment);
 
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         getInstrumentation().waitForIdleSync();
 
-        final Fragment landscapeFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.record_fragment);
+        final Fragment landscapeFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.dialog_fragment);
         assertTrue("Recording fragment must be retained", portraitFragment == landscapeFragment);
     }
 }
