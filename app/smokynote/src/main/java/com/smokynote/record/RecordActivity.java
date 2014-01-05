@@ -55,6 +55,7 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     @Override
     protected void bindButtonBar() {
         final Button cancelButton = (Button) findViewById(R.id.cancel);
+        cancelButton.setText(R.string.recording_cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +64,7 @@ public class RecordActivity extends DialogActivity implements RecordListener {
         });
 
         final Button submitButton = (Button) findViewById(R.id.submit);
+        submitButton.setText(R.string.recording_submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
