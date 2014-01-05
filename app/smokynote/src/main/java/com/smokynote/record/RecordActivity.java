@@ -108,15 +108,17 @@ public class RecordActivity extends DialogActivity implements RecordListener {
         try {
             fileName = recordFragment.finishRecording();
         } catch (StorageUnavailableException e) {
-            setResult(RESULT_STORAGE_UNAVAILABLE);
-            finish();
+            onStorageUnavailable();
             return;
         } catch (RecordSaveException e) {
-            setResult(RESULT_SAVE_ERROR);
-            finish();
+            onResultSaveError();
             return;
         }
 
+        returnRecordedFileName(fileName);
+    }
+
+    private void returnRecordedFileName(String fileName) {
         final Intent intent = new Intent();
         intent.putExtra(EXTRA_FILENAME, fileName);
         setResult(RESULT_RECORDED, intent);
@@ -135,6 +137,12 @@ public class RecordActivity extends DialogActivity implements RecordListener {
     public void onRecorderPrepareFailed() {
         LOG.warn("Recorder prepare exception");
         setResult(RESULT_RECORDER_PREPARE_FAILED);
+        finish();
+    }
+
+    private void onResultSaveError() {
+        LOG.warn("Can't save recorded file");
+        setResult(RESULT_SAVE_ERROR);
         finish();
     }
 }
