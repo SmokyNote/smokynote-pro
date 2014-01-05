@@ -8,12 +8,16 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.smokynote.record.RecordActivity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Maksim Zakharov
  * @since 1.0
  */
 public class NotesListActivity extends SherlockFragmentActivity {
+
+    private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.NOTES");
 
     private static final int ACTIVITY_RECORD = 10;
 
@@ -71,6 +75,12 @@ public class NotesListActivity extends SherlockFragmentActivity {
             case RecordActivity.RESULT_RECORDER_PREPARE_FAILED:
                 handleRecorderPrepareFailed();
                 break;
+            case RecordActivity.RESULT_SAVE_ERROR:
+                handleRecordSaveError();
+                break;
+            case RecordActivity.RESULT_RECORDED:
+                handleRecordSuccess(data);
+                break;
         }
     }
 
@@ -80,5 +90,14 @@ public class NotesListActivity extends SherlockFragmentActivity {
 
     private void handleRecorderPrepareFailed() {
         Toast.makeText(this, R.string.record_error_recorder_prepare_failed, Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleRecordSaveError() {
+        Toast.makeText(this, R.string.record_error_save_failed, Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleRecordSuccess(Intent data) {
+        final String fileName = data.getStringExtra(RecordActivity.EXTRA_FILENAME);
+        LOG.info("Recorded file {}", fileName);
     }
 }
