@@ -17,11 +17,15 @@ public abstract class DialogActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final int width = getResources().getDimensionPixelSize(R.dimen.dialog_width);
+        final int width = getDialogWidth();
         if (width > 0) {
             // This sets the window size, while working around the IllegalStateException thrown by ActionBarView
             getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+    }
+
+    protected int getDialogWidth() {
+        return getResources().getDimensionPixelSize(R.dimen.dialog_width);
     }
 
     @Override
