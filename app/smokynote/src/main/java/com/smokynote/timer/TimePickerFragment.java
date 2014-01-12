@@ -52,4 +52,13 @@ public class TimePickerFragment extends SherlockFragment {
     private long getMinDateInMilliseconds() {
         return DateTime.now().minusSeconds(1).getMillis();
     }
+
+    public DateTime getSelectedTime() {
+        final DatePicker datePicker = (DatePicker) getView().findViewById(R.id.date_picker);
+        final TimePicker timePicker = (TimePicker) getView().findViewById(R.id.time_picker);
+
+        return new DateTime(
+                datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(),
+                timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+    }
 }

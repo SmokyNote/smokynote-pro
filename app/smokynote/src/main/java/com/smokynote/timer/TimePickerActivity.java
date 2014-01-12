@@ -1,5 +1,6 @@
 package com.smokynote.timer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.smokynote.activity.DialogActivity;
 public class TimePickerActivity extends DialogActivity {
 
     public static final int RESULT_TIME_SELECTED = 10;
+
+    public static final String EXTRA_TIME = "time";
 
     private TimePickerFragment timePickerFragment;
 
@@ -93,8 +96,9 @@ public class TimePickerActivity extends DialogActivity {
     }
 
     private void submit() {
-        // TODO: provide intent with extras
-        setResult(RESULT_TIME_SELECTED, null);
+        final Intent data = new Intent();
+        data.putExtra(EXTRA_TIME, timePickerFragment.getSelectedTime());
+        setResult(RESULT_TIME_SELECTED, data);
         finish();
     }
 
