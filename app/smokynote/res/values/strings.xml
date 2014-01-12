@@ -14,4 +14,6 @@
     <string name="record_error_save_failed">Can\'t save file</string>
 
     <string name="time_picker_title">Choose time</string>
+    <string name="time_picker_cancel">Cancel</string>
+    <string name="time_picker_submit">Save</string>
 </resources>
