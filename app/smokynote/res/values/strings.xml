@@ -12,4 +12,6 @@
     <string name="record_error_storage_unavailable">Storage unavailable</string>
     <string name="record_error_recorder_prepare_failed">Can\'t record audio</string>
     <string name="record_error_save_failed">Can\'t save file</string>
+
+    <string name="time_picker_title">Choose time</string>
 </resources>
