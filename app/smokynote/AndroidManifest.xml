@@ -38,5 +38,11 @@
                   android:theme="@style/Theme.Styled.DialogLike"
                   android:noHistory="true"
                   android:excludeFromRecents="true"/>
+
+        <activity android:name=".timer.TimePickerActivity"
+                  android:label="@string/time_picker_title"
+                  android:theme="@style/Theme.Styled.DialogLike"
+                  android:noHistory="true"
+                  android:excludeFromRecents="true"/>
     </application>
 </manifest>

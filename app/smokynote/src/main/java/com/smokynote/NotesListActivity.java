@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.smokynote.record.RecordActivity;
+import com.smokynote.timer.TimePickerActivity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,5 +100,8 @@ public class NotesListActivity extends SherlockFragmentActivity {
     private void handleRecordSuccess(Intent data) {
         final String fileName = data.getStringExtra(RecordActivity.EXTRA_FILENAME);
         LOG.info("Recorded file {}", fileName);
+
+        final Intent intent = new Intent(this, TimePickerActivity.class);
+        startActivity(intent);
     }
 }
