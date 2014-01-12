@@ -40,4 +40,9 @@ public class TimePickerActivity extends DialogActivity {
     protected void bindButtonBar() {
 
     }
+
+    @Override
+    protected int getDialogWidth() {
+        return getResources().getDimensionPixelSize(R.dimen.time_picker_dialog_width);
+    }
 }
