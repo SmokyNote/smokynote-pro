@@ -17,6 +17,7 @@ public class RecordActivityIntegrationTest extends ActivityInstrumentationTestCa
 
     Application application;
 
+    @SuppressWarnings("deprecation")
     public RecordActivityIntegrationTest() {
         super("com.smokynote", RecordActivity.class);
     }

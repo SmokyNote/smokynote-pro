@@ -26,6 +26,7 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
 
     Application application;
 
+    @SuppressWarnings("deprecation")
     public NotesListActivityIntegrationTest() {
         // Android 2.1 requires pkg to be presented.
         super("com.smokynote", NotesListActivity.class);
