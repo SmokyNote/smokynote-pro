@@ -20,6 +20,7 @@ public class TimePickerActivity extends DialogActivity {
     public static final int RESULT_TIME_SELECTED = 10;
 
     public static final String EXTRA_TIME = "time";
+    public static final String EXTRA_TRANSFER = "transfer";
 
     private TimePickerFragment timePickerFragment;
 
@@ -98,6 +99,9 @@ public class TimePickerActivity extends DialogActivity {
     private void submit() {
         final Intent data = new Intent();
         data.putExtra(EXTRA_TIME, timePickerFragment.getSelectedTime());
+        if (getIntent().hasExtra(EXTRA_TRANSFER)) {
+            data.putExtra(EXTRA_TRANSFER, getIntent().getBundleExtra(EXTRA_TRANSFER));
+        }
         setResult(RESULT_TIME_SELECTED, data);
         finish();
     }

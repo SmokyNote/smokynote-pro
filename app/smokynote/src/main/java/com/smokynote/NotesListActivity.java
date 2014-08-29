@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.smokynote.inject.Injector;
 import com.smokynote.record.RecordActivity;
 import com.smokynote.timer.TimePickerActivity;
+
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +25,15 @@ public class NotesListActivity extends SherlockFragmentActivity {
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.NOTES");
 
     private static final int ACTIVITY_RECORD = 10;
+    private static final int ACTIVITY_TIME_PICKER = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.notes_list_activity);
+
+        ((Injector) getApplication()).inject(this);
     }
 
     @Override
@@ -63,10 +70,16 @@ public class NotesListActivity extends SherlockFragmentActivity {
             case ACTIVITY_RECORD:
                 handleRecordResult(resultCode, data);
                 break;
+            case ACTIVITY_TIME_PICKER:
+                handleTimePickerResult(resultCode, data);
+                break;
             default:
+                LOG.warn("Unhandled activity result, requestCode = {}", requestCode);
                 super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    // Handle recording
 
     private void handleRecordResult(int resultCode, Intent data) {
         switch (resultCode) {
@@ -102,6 +115,34 @@ public class NotesListActivity extends SherlockFragmentActivity {
         LOG.info("Recorded file {}", fileName);
 
         final Intent intent = new Intent(this, TimePickerActivity.class);
-        startActivity(intent);
+        // Pass RecordActivity response as "transfer" extra, so we can use it later.
+        intent.putExtra(TimePickerActivity.EXTRA_TRANSFER, data.getExtras());
+        startActivityForResult(intent, ACTIVITY_TIME_PICKER);
+    }
+
+    // Handle time picking
+
+    private void handleTimePickerResult(int resultCode, Intent data) {
+        switch (resultCode) {
+            case TimePickerActivity.RESULT_TIME_SELECTED:
+                handleTimePickerSuccess(data);
+                break;
+            default:
+                LOG.warn("Unhandled TimePicker result code {}", resultCode);
+        }
+    }
+
+    private void handleTimePickerSuccess(Intent data) {
+        final Bundle recordingResult = data.getBundleExtra(TimePickerActivity.EXTRA_TRANSFER);
+        // TODO: can it be null for any reason?
+        final String fileName = recordingResult.getString(RecordActivity.EXTRA_FILENAME);
+        final DateTime schedule = (DateTime) data.getSerializableExtra(TimePickerActivity.EXTRA_TIME);
+
+        LOG.debug("Got picked time, saving new Note");
+
+        saveNote(fileName, schedule);
+    }
+
+    private void saveNote(String fileName, DateTime schedule) {
     }
 }
