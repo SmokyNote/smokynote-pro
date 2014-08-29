@@ -9,12 +9,16 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.smokynote.inject.Injector;
+import com.smokynote.note.NotesRepository;
+import com.smokynote.orm.Note;
 import com.smokynote.record.RecordActivity;
 import com.smokynote.timer.TimePickerActivity;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 /**
  * @author Maksim Zakharov
@@ -26,6 +30,9 @@ public class NotesListActivity extends SherlockFragmentActivity {
 
     private static final int ACTIVITY_RECORD = 10;
     private static final int ACTIVITY_TIME_PICKER = 11;
+
+    @Inject
+    /* private */ NotesRepository notesRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,5 +151,13 @@ public class NotesListActivity extends SherlockFragmentActivity {
     }
 
     private void saveNote(String fileName, DateTime schedule) {
+        final Note note = new Note();
+        note.setEnabled(true);
+        note.setFilename(fileName);
+        note.setSchedule(schedule);
+        notesRepository.add(note);
+        LOG.debug("New Note saved: {}", note);
+
+        // TODO: how should we notify about Notes change?
     }
 }
