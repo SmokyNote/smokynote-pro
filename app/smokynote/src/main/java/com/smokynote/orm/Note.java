@@ -2,6 +2,9 @@ package com.smokynote.orm;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -29,6 +32,39 @@ public class Note implements Serializable {
 
     @DatabaseField(canBeNull = false)
     private String filename;
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", getId())
+                .append("enabled", isEnabled())
+                .append("schedule", getSchedule())
+                .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || o.getClass() != getClass()) {
+            return false;
+        }
+
+        if (o == this) {
+            return true;
+        }
+
+        return isEquals((Note) o);
+    }
+
+    public boolean isEquals(Note other) {
+        return getFilename().equals(other.getFilename());
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getFilename())
+                .toHashCode();
+    }
 
     public Integer getId() {
         return id;
