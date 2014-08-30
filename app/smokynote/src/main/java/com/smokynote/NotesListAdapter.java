@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import com.smokynote.note.Note;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,6 +76,7 @@ public class NotesListAdapter extends BaseAdapter {
 
     private void bind(View view, Note note) {
         bindToggleButton((ToggleButton) view.findViewById(R.id.toggle_alarm), note);
+        bindDescription((TextView) view.findViewById(R.id.note_description), note);
     }
 
     private void bindToggleButton(ToggleButton button, Note note) {
@@ -82,6 +86,15 @@ public class NotesListAdapter extends BaseAdapter {
         } else {
             button.setEnabled(true);
             button.setChecked(note.isEnabled());
+        }
+    }
+
+    private void bindDescription(TextView textView, Note note) {
+        if (StringUtils.isEmpty(note.getDescription())) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setText(note.getDescription());
+            textView.setVisibility(View.VISIBLE);
         }
     }
 }

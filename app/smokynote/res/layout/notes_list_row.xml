@@ -29,16 +29,19 @@
                 android:text="In 10 minutes"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:singleLine="true"
+                android:gravity="center"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0dip"/>
 
         <TextView
                 android:id="@+id/note_description"
                 android:text="Sample description, long, long long, description"
                 android:ellipsize="marquee"
                 android:singleLine="true"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0dip"/>
     </LinearLayout>
 
     <ImageButton
