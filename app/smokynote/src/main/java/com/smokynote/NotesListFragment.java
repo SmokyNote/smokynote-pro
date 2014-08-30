@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.smokynote.inject.Injector;
 import com.smokynote.note.NotesRepository;
@@ -43,5 +44,13 @@ public class NotesListFragment extends SherlockListFragment {
         super.onResume();
 
         notesListAdapter.setNotes(notesRepository.getAll());
+        notesListAdapter.start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        notesListAdapter.stop();
     }
 }
