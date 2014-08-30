@@ -18,7 +18,7 @@ public class Note implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @DatabaseField(id = true, generatedId = true)
+    @DatabaseField(generatedId = true)
     private Integer id;
 
     @DatabaseField(canBeNull = false)
