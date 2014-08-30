@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.smokynote.inject.Injector;
+import com.smokynote.note.NoteBuilder;
 import com.smokynote.note.NotesRepository;
 import com.smokynote.note.Note;
 import com.smokynote.record.RecordActivity;
@@ -151,10 +152,12 @@ public class NotesListActivity extends SherlockFragmentActivity {
     }
 
     private void saveNote(String fileName, DateTime schedule) {
-        final Note note = new Note();
-        note.setEnabled(true);
-        note.setFilename(fileName);
-        note.setSchedule(schedule);
+        final Note note = new NoteBuilder()
+                .withDescription("")
+                .withSchedule(schedule)
+                .withEnabled(true)
+                .withFilename(fileName)
+                .build();
         notesRepository.add(note);
         LOG.debug("New Note saved: {}", note);
 

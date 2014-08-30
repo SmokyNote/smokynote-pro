@@ -8,6 +8,7 @@ import android.widget.ListView;
 import com.smokynote.Application;
 import com.smokynote.NotesListActivity;
 import com.smokynote.R;
+import com.smokynote.note.NoteBuilder;
 import com.smokynote.note.NotesRepository;
 import com.smokynote.note.Note;
 import com.smokynote.record.RecordActivity;
@@ -75,10 +76,12 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
     }
 
     private Note createTestNote() {
-        final Note note = new Note();
-        note.setId(1);
-        note.setSchedule(DateTime.now());
-        return note;
+        return new NoteBuilder()
+                .withId(1)
+                .withSchedule(DateTime.now())
+                .withFilename("")
+                .withDescription("")
+                .build();
     }
 
     private ListView listView() {
