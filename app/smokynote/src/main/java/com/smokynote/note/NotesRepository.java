@@ -8,6 +8,11 @@ import java.util.List;
  */
 public interface NotesRepository {
 
+    /**
+     * Return all the Notes sorted by schedule, descending.
+     *
+     * @return all existing Notes
+     */
     List<Note> getAll();
 
     void add(Note note);

@@ -25,7 +25,12 @@ public class NotesRepositoryOrmImpl implements NotesRepository {
 
     @Override
     public List<Note> getAll() {
-        return dao().queryForAll();
+        try {
+            return dao().queryBuilder().orderBy("schedule", false).query();
+        } catch (SQLException e) {
+            // RuntimeExceptionDao is not so runtime in some cases.
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
