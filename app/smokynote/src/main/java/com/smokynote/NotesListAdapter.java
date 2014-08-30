@@ -1,16 +1,15 @@
 package com.smokynote;
 
 import android.content.Context;
-import android.os.Handler;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.smokynote.note.Note;
+import com.smokynote.widget.AutoUpdatingBaseAdapter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,13 +22,10 @@ import java.util.List;
  * @author Maksim Zakharov
  * @since 1.0
  */
-public class NotesListAdapter extends BaseAdapter {
+public class NotesListAdapter extends AutoUpdatingBaseAdapter {
 
     private final LayoutInflater layoutInflater;
     private final List<Note> notes;
-
-    private final Handler handler = new Handler();
-    private final Runnable updateTimerTask = new UpdateTimerTask();
 
     public NotesListAdapter(Context context) {
         this(context, Collections.<Note>emptyList());
@@ -44,14 +40,6 @@ public class NotesListAdapter extends BaseAdapter {
         notes.clear();
         notes.addAll(newNotes);
         notifyDataSetChanged();
-    }
-
-    public void start() {
-        handler.post(updateTimerTask);
-    }
-
-    public void stop() {
-        handler.removeCallbacks(updateTimerTask);
     }
 
     @Override
@@ -119,17 +107,6 @@ public class NotesListAdapter extends BaseAdapter {
         } else {
             textView.setText(note.getDescription());
             textView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private class UpdateTimerTask implements Runnable {
-
-        @Override
-        public void run() {
-            // Invalidating data set causes whole view to redraw and aborts long taps.
-            // Have no idea how to "fix" it.
-            notifyDataSetChanged();
-            handler.postDelayed(this, DateUtils.SECOND_IN_MILLIS);
         }
     }
 }
