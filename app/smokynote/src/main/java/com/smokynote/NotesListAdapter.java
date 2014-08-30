@@ -1,12 +1,14 @@
 package com.smokynote;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import com.smokynote.note.Note;
 
 import org.apache.commons.lang3.StringUtils;
@@ -76,6 +78,7 @@ public class NotesListAdapter extends BaseAdapter {
 
     private void bind(View view, Note note) {
         bindToggleButton((ToggleButton) view.findViewById(R.id.toggle_alarm), note);
+        bindSchedule((TextView) view.findViewById(R.id.note_schedule), note);
         bindDescription((TextView) view.findViewById(R.id.note_description), note);
     }
 
@@ -87,6 +90,15 @@ public class NotesListAdapter extends BaseAdapter {
             button.setEnabled(true);
             button.setChecked(note.isEnabled());
         }
+    }
+
+    private void bindSchedule(TextView textView, Note note) {
+        CharSequence timeString = DateUtils.getRelativeTimeSpanString(
+                note.getSchedule().getMillis(),
+                System.currentTimeMillis(),
+                DateUtils.SECOND_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE);
+        textView.setText(timeString);
     }
 
     private void bindDescription(TextView textView, Note note) {
