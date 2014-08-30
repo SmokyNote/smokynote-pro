@@ -10,6 +10,10 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 /**
+ * Represents Note entity.
+ * Since there are a lot of non-null fields, you might find useful to construct
+ * Note instances using {@link NoteBuilder}.
+ *
  * @author Maksim Zakharov
  * @since 1.0
  */
