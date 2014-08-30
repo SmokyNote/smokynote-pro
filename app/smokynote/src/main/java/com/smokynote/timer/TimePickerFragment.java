@@ -50,7 +50,9 @@ public class TimePickerFragment extends SherlockFragment {
     }
 
     private long getMinDateInMilliseconds() {
-        return DateTime.now().minusSeconds(1).getMillis();
+        // I've caught error few times here.
+        // Android says that returned value does not precedes current time.
+        return System.currentTimeMillis() - 1001L;
     }
 
     public DateTime getSelectedTime() {
