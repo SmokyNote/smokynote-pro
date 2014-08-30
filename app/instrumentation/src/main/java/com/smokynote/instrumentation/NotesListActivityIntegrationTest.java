@@ -9,7 +9,7 @@ import com.smokynote.Application;
 import com.smokynote.NotesListActivity;
 import com.smokynote.R;
 import com.smokynote.note.NotesRepository;
-import com.smokynote.orm.Note;
+import com.smokynote.note.Note;
 import com.smokynote.record.RecordActivity;
 import org.joda.time.DateTime;
 

@@ -10,7 +10,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.smokynote.inject.Injector;
 import com.smokynote.note.NotesRepository;
-import com.smokynote.orm.Note;
+import com.smokynote.note.Note;
 import com.smokynote.record.RecordActivity;
 import com.smokynote.timer.TimePickerActivity;
 

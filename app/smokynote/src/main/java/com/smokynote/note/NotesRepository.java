@@ -1,7 +1,5 @@
 package com.smokynote.note;
 
-import com.smokynote.orm.Note;
-
 import java.util.List;
 
 /**

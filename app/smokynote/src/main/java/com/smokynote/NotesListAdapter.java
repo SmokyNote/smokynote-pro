@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ToggleButton;
-import com.smokynote.orm.Note;
+import com.smokynote.note.Note;
 
 import java.util.ArrayList;
 import java.util.Collection;

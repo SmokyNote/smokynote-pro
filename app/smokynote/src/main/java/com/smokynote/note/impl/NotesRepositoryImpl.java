@@ -1,7 +1,7 @@
 package com.smokynote.note.impl;
 
 import com.smokynote.note.NotesRepository;
-import com.smokynote.orm.Note;
+import com.smokynote.note.Note;
 
 import java.util.ArrayList;
 import java.util.Collections;
