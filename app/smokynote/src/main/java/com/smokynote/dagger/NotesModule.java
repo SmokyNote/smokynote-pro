@@ -3,7 +3,7 @@ package com.smokynote.dagger;
 import com.smokynote.NotesListActivity;
 import com.smokynote.NotesListFragment;
 import com.smokynote.note.NotesRepository;
-import com.smokynote.note.impl.NotesRepositoryImpl;
+import com.smokynote.note.impl.NotesRepositoryOrmImpl;
 import com.smokynote.record.RecordFragment;
 import dagger.Module;
 import dagger.Provides;
@@ -22,13 +22,15 @@ import javax.inject.Singleton;
         // Actual classes to inject dependencies to
         NotesListActivity.class,
         NotesListFragment.class,
-        RecordFragment.class
+        RecordFragment.class,
+
+        NotesRepositoryOrmImpl.class,
 })
 public class NotesModule {
 
     @Provides
     @Singleton
-    public NotesRepository provideNotesRepository() {
-        return new NotesRepositoryImpl();
+    public NotesRepository provideNotesRepository(NotesRepositoryOrmImpl impl) {
+        return impl;
     }
 }

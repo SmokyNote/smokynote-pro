@@ -11,7 +11,7 @@ import java.util.List;
  * @author Maksim Zakharov
  * @since 1.0
  */
-public class NotesRepositoryImpl implements NotesRepository {
+public class NotesRepositoryInMemoryImpl implements NotesRepository {
 
     private List<Note> notes = new ArrayList<Note>();
 
