@@ -47,7 +47,7 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
     }
 
     @SmallTest
-    public void testLaunchRecording() throws Throwable{
+    public void testLaunchRecording() throws Throwable {
         final Instrumentation.ActivityMonitor monitor =
                 getInstrumentation().addMonitor(RecordActivity.class.getName(), null, true);
 
@@ -69,18 +69,37 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
         assertThat("Expected exactly one Note to be listed", listView().getCount(), equalTo(1));
     }
 
-    private void prepareNotesRepository() {
+    @SmallTest
+    public void testNoteEnableButtonPersistState() throws Throwable {
+        // Prepare repository before #getActivity() first call
+        NotesRepository repository = prepareNotesRepository();
+        assertTrue("Note must be enabled before test", repository.getAll().get(0).isEnabled());
+
+        final Button toggleStatusButton = (Button) getActivity().findViewById(R.id.toggle_alarm);
+        runTestOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                toggleStatusButton.performClick();
+            }
+        });
+
+        assertFalse("Note must be disabled", repository.getAll().get(0).isEnabled());
+    }
+
+    private NotesRepository prepareNotesRepository() {
         final NotesRepository notesRepository = application.getDependency(NotesRepository.class);
         notesRepository.clear();
         notesRepository.add(createTestNote());
+        return notesRepository;
     }
 
     private Note createTestNote() {
         return new NoteBuilder()
                 .withId(1)
-                .withSchedule(DateTime.now())
+                .withSchedule(DateTime.now().plusSeconds(60))
                 .withFilename("")
                 .withDescription("")
+                .withEnabled(true)
                 .build();
     }
 
