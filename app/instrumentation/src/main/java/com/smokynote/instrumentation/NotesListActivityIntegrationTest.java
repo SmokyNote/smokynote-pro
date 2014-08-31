@@ -2,16 +2,22 @@ package com.smokynote.instrumentation;
 
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.cocosw.undobar.UndoBarController;
+import com.robotium.solo.Solo;
 import com.smokynote.Application;
 import com.smokynote.NotesListActivity;
 import com.smokynote.R;
+import com.smokynote.note.Note;
 import com.smokynote.note.NoteBuilder;
 import com.smokynote.note.NotesRepository;
-import com.smokynote.note.Note;
 import com.smokynote.record.RecordActivity;
+
 import org.joda.time.DateTime;
 
 import static org.hamcrest.MatcherAssert.*;
@@ -84,6 +90,42 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
         });
 
         assertFalse("Note must be disabled", repository.getAll().get(0).isEnabled());
+    }
+
+    @MediumTest
+    public void testUndoDeletion() throws Throwable {
+        // Prepare repository before #getActivity() first call
+        NotesRepository repository = prepareNotesRepository();
+        assertEquals("Must be exactly one Note before test", 1, repository.getAll().size());
+        final Solo solo = new Solo(getInstrumentation(), getActivity());
+
+        // Step 1: delete
+        final View contextMenuButton = getActivity().findViewById(R.id.note_actions);
+        solo.clickOnView(contextMenuButton);
+
+        solo.clickOnText(getActivity().getResources().getString(R.string.note_action_delete));
+        solo.waitForView(UndoBarController.class, 1, 500);
+
+        assertEquals("Note expected to be marked for deletion", 1, repository.getMarkedForDeletion().size());
+
+        // Step 2: undo
+        solo.clickOnText(getActivity().getResources().getString(R.string.undo));
+        waitForNoView(solo, UndoBarController.class, 500);
+
+        assertEquals("Note expected to be restored", 0, repository.getMarkedForDeletion().size());
+    }
+
+    private void waitForNoView(Solo solo, Class<? extends View> aClass, int timeout) {
+        for (int i = 0; i < timeout; i += 50) {
+            if (solo.getCurrentViews(aClass).isEmpty()) {
+                return;
+            }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                // pass
+            }
+        }
     }
 
     private NotesRepository prepareNotesRepository() {
