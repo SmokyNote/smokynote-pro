@@ -69,13 +69,21 @@ public class NotesRepositoryOrmImpl implements NotesRepository {
     }
 
     @Override
-    public void markDeleted(Integer id) {
-        RuntimeExceptionDao<Note, Integer> dao = dao();
-        final Note note = dao.queryForId(id);
+    public void markDeleted(Integer id, boolean deleted) {
+        final Note note = dao().queryForId(id);
         if (note != null) {
-            note.setDeletionTime(DateTime.now());
+            markDeleted(note, deleted);
         }
-        dao.update(note);
+    }
+
+    private void markDeleted(Note note, boolean deleted) {
+        if (deleted) {
+            note.setDeletionTime(DateTime.now());
+        } else {
+            note.setDeletionTime(null);
+        }
+
+        dao().update(note);
     }
 
     @Override

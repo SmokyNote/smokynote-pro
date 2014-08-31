@@ -3,6 +3,7 @@ package com.smokynote;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.actionbarsherlock.internal.view.menu.MenuBuilder;
 import com.actionbarsherlock.internal.view.menu.MenuPopupHelper;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.cocosw.undobar.UndoBarController;
 import com.smokynote.inject.Injector;
 import com.smokynote.note.Note;
 import com.smokynote.note.NotesRepository;
@@ -21,6 +23,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 /**
@@ -150,10 +153,35 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
      * @param noteId Note id to delete
      */
     private void deleteNote(Integer noteId) {
-        notesRepository.markDeleted(noteId);
+        notesRepository.markDeleted(noteId, true);
 
         // TODO: broadcast
-        // TODO: show Undo bar
+
+        showDeleteUndoBar(noteId);
+    }
+
+    private void showDeleteUndoBar(Integer noteId) {
+        final Bundle undoToken = new Bundle();
+        undoToken.putInt(EXTRA_NOTE_ID, noteId);
+        new UndoBarController.UndoBar(getActivity())
+                .message("Note deleted")
+                .token(undoToken)
+                .listener(new UndoBarController.UndoListener() {
+                    @Override
+                    public void onUndo(Parcelable token) {
+                        if (token != null) {
+                            undoNoteDeletion(token);
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private void undoNoteDeletion(@Nonnull Parcelable token) {
+        Bundle bundle = (Bundle) token;
+        Integer noteId = bundle.getInt(EXTRA_NOTE_ID);
+        notesRepository.markDeleted(noteId, false);
+        // TODO: broadcast
     }
 
     // Context menu

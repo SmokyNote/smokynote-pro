@@ -62,9 +62,13 @@ public class NotesRepositoryInMemoryImpl implements NotesRepository {
     }
 
     @Override
-    public void markDeleted(Integer id) {
+    public void markDeleted(Integer id, boolean deleted) {
         Note note = getById(id);
-        note.setDeletionTime(DateTime.now());
+        if (deleted) {
+            note.setDeletionTime(DateTime.now());
+        } else {
+            note.setDeletionTime(null);
+        }
     }
 
     @Override

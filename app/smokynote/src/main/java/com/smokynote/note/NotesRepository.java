@@ -31,7 +31,7 @@ public interface NotesRepository {
 
     Note getById(Integer id);
 
-    void markDeleted(Integer id);
+    void markDeleted(Integer id, boolean deleted);
 
     /**
      * Remove all notes from repository.
