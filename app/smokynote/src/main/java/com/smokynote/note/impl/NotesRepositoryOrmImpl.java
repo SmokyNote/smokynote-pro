@@ -39,6 +39,11 @@ public class NotesRepositoryOrmImpl implements NotesRepository {
     }
 
     @Override
+    public void save(Note note) {
+        dao().update(note);
+    }
+
+    @Override
     public void clear() {
         try {
             dao().deleteBuilder().delete();

@@ -27,6 +27,8 @@ public class NotesListAdapter extends AutoUpdatingBaseAdapter {
     private final LayoutInflater layoutInflater;
     private final List<Note> notes;
 
+    private NoteEnableListener listener;
+
     public NotesListAdapter(Context context) {
         this(context, Collections.<Note>emptyList());
     }
@@ -82,13 +84,26 @@ public class NotesListAdapter extends AutoUpdatingBaseAdapter {
         bindDescription((TextView) view.findViewById(R.id.note_description), note);
     }
 
-    private void bindToggleButton(ToggleButton button, Note note) {
+    private void bindToggleButton(ToggleButton button, final Note note) {
         if (note.getSchedule().isBeforeNow()) {
             button.setChecked(false);
             button.setEnabled(false);
         } else {
             button.setEnabled(true);
             button.setChecked(note.isEnabled());
+        }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleNote(note);
+            }
+        });
+    }
+
+    private void toggleNote(Note note) {
+        if (listener != null) {
+            listener.onEnable(note, !note.isEnabled());
         }
     }
 
@@ -108,5 +123,14 @@ public class NotesListAdapter extends AutoUpdatingBaseAdapter {
             textView.setText(note.getDescription());
             textView.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setListener(NoteEnableListener listener) {
+        this.listener = listener;
+    }
+
+    public static interface NoteEnableListener {
+
+        void onEnable(Note note, boolean enabled);
     }
 }

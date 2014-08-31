@@ -26,6 +26,12 @@ public class NotesRepositoryInMemoryImpl implements NotesRepository {
     }
 
     @Override
+    public void save(Note note) {
+        notes.remove(note);
+        notes.add(note);
+    }
+
+    @Override
     public void clear() {
         notes.clear();
     }

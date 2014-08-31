@@ -17,6 +17,8 @@ public interface NotesRepository {
 
     void add(Note note);
 
+    void save(Note note);
+
     /**
      * Remove all notes from repository.
      */
