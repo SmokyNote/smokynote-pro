@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Maksim Zakharov
  * @since 1.0
@@ -27,7 +29,10 @@ public class NotesListAdapter extends AutoUpdatingBaseAdapter {
     private final LayoutInflater layoutInflater;
     private final List<Note> notes;
 
-    private NoteEnableListener listener;
+    @Nullable
+    private NoteEnableListener noteEnableListener;
+    @Nullable
+    private NoteMenuListener noteMenuListener;
 
     public NotesListAdapter(Context context) {
         this(context, Collections.<Note>emptyList());
@@ -82,6 +87,7 @@ public class NotesListAdapter extends AutoUpdatingBaseAdapter {
         bindToggleButton((ToggleButton) view.findViewById(R.id.toggle_alarm), note);
         bindSchedule((TextView) view.findViewById(R.id.note_schedule), note);
         bindDescription((TextView) view.findViewById(R.id.note_description), note);
+        bindContextMenu(view.findViewById(R.id.note_actions), note);
     }
 
     private void bindToggleButton(ToggleButton button, final Note note) {
@@ -102,8 +108,8 @@ public class NotesListAdapter extends AutoUpdatingBaseAdapter {
     }
 
     private void toggleNote(Note note) {
-        if (listener != null) {
-            listener.onEnable(note, !note.isEnabled());
+        if (noteEnableListener != null) {
+            noteEnableListener.onEnable(note, !note.isEnabled());
         }
     }
 
@@ -125,12 +131,32 @@ public class NotesListAdapter extends AutoUpdatingBaseAdapter {
         }
     }
 
-    public void setListener(NoteEnableListener listener) {
-        this.listener = listener;
+    private void bindContextMenu(final View button, final Note note) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (noteMenuListener != null) {
+                    noteMenuListener.onMenuRequested(note, button);
+                }
+            }
+        });
+    }
+
+    public void setNoteEnableListener(NoteEnableListener noteEnableListener) {
+        this.noteEnableListener = noteEnableListener;
+    }
+
+    public void setNoteMenuListener(NoteMenuListener noteMenuListener) {
+        this.noteMenuListener = noteMenuListener;
     }
 
     public static interface NoteEnableListener {
 
         void onEnable(Note note, boolean enabled);
+    }
+
+    public static interface NoteMenuListener {
+
+        void onMenuRequested(Note note, View anchor);
     }
 }

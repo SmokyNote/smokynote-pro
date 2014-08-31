@@ -16,4 +16,8 @@
     <string name="time_picker_title">Choose time</string>
     <string name="time_picker_cancel">Cancel</string>
     <string name="time_picker_submit">Save</string>
+
+    <string name="note_action_play">Play</string>
+    <string name="note_action_schedule">Schedule</string>
+    <string name="note_action_delete">Delete</string>
 </resources>
