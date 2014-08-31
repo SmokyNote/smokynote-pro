@@ -105,6 +105,15 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
     // Scheduling
 
+    private void promptNewSchedule(Note note) {
+        final Intent intent = new Intent(getActivity().getApplicationContext(), TimePickerActivity.class);
+        // Pass Note id as extra, so we can use it later.
+        final Bundle extras = new Bundle();
+        extras.putInt(EXTRA_NOTE_ID, note.getId());
+        intent.putExtra(TimePickerActivity.EXTRA_TRANSFER, extras);
+        startActivityForResult(intent, ACTIVITY_TIME_PICKER);
+    }
+
     private void handleTimePickerResult(int resultCode, Intent data) {
         switch (resultCode) {
             case TimePickerActivity.RESULT_TIME_SELECTED:
@@ -133,6 +142,20 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         // TODO: broadcast
     }
 
+    // Deleting
+
+    /**
+     * Mark Note for deletion, we'll periodically collect marked Notes and delete them.
+     *
+     * @param noteId Note id to delete
+     */
+    private void deleteNote(Integer noteId) {
+        notesRepository.markDeleted(noteId);
+
+        // TODO: broadcast
+        // TODO: show Undo bar
+    }
+
     // Context menu
 
     @Override
@@ -148,15 +171,6 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         new MenuInflater(context).inflate(R.menu.note_context_menu, menuBuilder);
         menuBuilder.setCallback(new NoteMenuCallback(note));
         return menuBuilder;
-    }
-
-    private void promptNewSchedule(Note note) {
-        final Intent intent = new Intent(getActivity().getApplicationContext(), TimePickerActivity.class);
-        // Pass Note id as extra, so we can use it later.
-        final Bundle extras = new Bundle();
-        extras.putInt(EXTRA_NOTE_ID, note.getId());
-        intent.putExtra(TimePickerActivity.EXTRA_TRANSFER, extras);
-        startActivityForResult(intent, ACTIVITY_TIME_PICKER);
     }
 
     private class NoteMenuCallback implements MenuBuilder.Callback {
@@ -179,6 +193,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
                     return true;
                 case R.id.note_action_delete:
                     LOG.info("Selected Delete action for Note {}", targetNote);
+                    deleteNote(targetNote.getId());
                     return true;
                 default:
                     LOG.warn("Unhandled menu item with id = {}", item.getItemId());

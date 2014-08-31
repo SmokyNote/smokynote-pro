@@ -3,6 +3,8 @@ package com.smokynote.note.impl;
 import com.smokynote.note.NotesRepository;
 import com.smokynote.note.Note;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +19,24 @@ public class NotesRepositoryInMemoryImpl implements NotesRepository {
 
     @Override
     public List<Note> getAll() {
-        return Collections.unmodifiableList(notes);
+        final List<Note> availableNotes = new ArrayList<Note>(notes.size());
+        for (Note note : notes) {
+            if (!note.isDeleted()) {
+                availableNotes.add(note);
+            }
+        }
+        return Collections.unmodifiableList(availableNotes);
+    }
+
+    @Override
+    public List<Note> getMarkedForDeletion() {
+        final List<Note> deletedNotes = new ArrayList<Note>(notes.size());
+        for (Note note : notes) {
+            if (note.isDeleted()) {
+                deletedNotes.add(note);
+            }
+        }
+        return Collections.unmodifiableList(deletedNotes);
     }
 
     @Override
@@ -40,6 +59,12 @@ public class NotesRepositoryInMemoryImpl implements NotesRepository {
         }
 
         return null;
+    }
+
+    @Override
+    public void markDeleted(Integer id) {
+        Note note = getById(id);
+        note.setDeletionTime(DateTime.now());
     }
 
     @Override

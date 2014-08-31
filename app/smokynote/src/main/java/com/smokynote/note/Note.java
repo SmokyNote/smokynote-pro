@@ -37,6 +37,9 @@ public class Note implements Serializable {
     @DatabaseField(canBeNull = false)
     private String filename;
 
+    @DatabaseField(columnName = "deletion_time")
+    private DateTime deletionTime;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -108,5 +111,17 @@ public class Note implements Serializable {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public DateTime getDeletionTime() {
+        return deletionTime;
+    }
+
+    public void setDeletionTime(DateTime deletionTime) {
+        this.deletionTime = deletionTime;
+    }
+
+    public boolean isDeleted() {
+        return deletionTime != null;
     }
 }
