@@ -1,6 +1,7 @@
 package com.smokynote;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,9 @@ import com.actionbarsherlock.view.MenuItem;
 import com.smokynote.inject.Injector;
 import com.smokynote.note.Note;
 import com.smokynote.note.NotesRepository;
+import com.smokynote.timer.TimePickerActivity;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +30,10 @@ import javax.inject.Inject;
 public class NotesListFragment extends SherlockListFragment implements NotesListAdapter.NoteEnableListener, NotesListAdapter.NoteMenuListener {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.LIST");
+
+    private static final int ACTIVITY_TIME_PICKER = 20;
+
+    private static final String EXTRA_NOTE_ID = "targetNoteId";
 
     @Inject
     /* private */ NotesRepository notesRepository;
@@ -85,6 +92,50 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ACTIVITY_TIME_PICKER:
+                handleTimePickerResult(resultCode, data);
+                break;
+            default:
+                LOG.warn("Unhandled activity result, requestCode = {}", requestCode);
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    // Scheduling
+
+    private void handleTimePickerResult(int resultCode, Intent data) {
+        switch (resultCode) {
+            case TimePickerActivity.RESULT_TIME_SELECTED:
+                handleTimePickerSuccess(data);
+                break;
+            default:
+                LOG.warn("Unhandled TimePicker result code {}", resultCode);
+        }
+    }
+
+    private void handleTimePickerSuccess(Intent data) {
+        final Bundle extras = data.getBundleExtra(TimePickerActivity.EXTRA_TRANSFER);
+        // TODO: can it be null for any reason?
+        final Integer noteId = extras.getInt(EXTRA_NOTE_ID);
+        final DateTime schedule = (DateTime) data.getSerializableExtra(TimePickerActivity.EXTRA_TIME);
+
+        LOG.debug("Got picked time, saving new Note");
+
+        scheduleNote(noteId, schedule);
+    }
+
+    private void scheduleNote(Integer noteId, DateTime schedule) {
+        final Note note = notesRepository.getById(noteId);
+        note.setSchedule(schedule);
+        notesRepository.save(note);
+        // TODO: broadcast
+    }
+
+    // Context menu
+
+    @Override
     public void onMenuRequested(Note note, View anchor) {
         final Context context = anchor.getContext();
         final MenuBuilder menuBuilder = createMenuBuilder(note, context);
@@ -97,6 +148,15 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         new MenuInflater(context).inflate(R.menu.note_context_menu, menuBuilder);
         menuBuilder.setCallback(new NoteMenuCallback(note));
         return menuBuilder;
+    }
+
+    private void promptNewSchedule(Note note) {
+        final Intent intent = new Intent(getActivity().getApplicationContext(), TimePickerActivity.class);
+        // Pass Note id as extra, so we can use it later.
+        final Bundle extras = new Bundle();
+        extras.putInt(EXTRA_NOTE_ID, note.getId());
+        intent.putExtra(TimePickerActivity.EXTRA_TRANSFER, extras);
+        startActivityForResult(intent, ACTIVITY_TIME_PICKER);
     }
 
     private class NoteMenuCallback implements MenuBuilder.Callback {
@@ -115,6 +175,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
                     return true;
                 case R.id.note_action_schedule:
                     LOG.info("Selected Schedule action for Note {}", targetNote);
+                    promptNewSchedule(targetNote);
                     return true;
                 case R.id.note_action_delete:
                     LOG.info("Selected Delete action for Note {}", targetNote);

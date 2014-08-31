@@ -19,6 +19,8 @@ public interface NotesRepository {
 
     void save(Note note);
 
+    Note getById(Integer id);
+
     /**
      * Remove all notes from repository.
      */

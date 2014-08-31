@@ -32,6 +32,17 @@ public class NotesRepositoryInMemoryImpl implements NotesRepository {
     }
 
     @Override
+    public Note getById(Integer id) {
+        for (Note note : notes) {
+            if (note.getId().equals(id)) {
+                return note;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public void clear() {
         notes.clear();
     }

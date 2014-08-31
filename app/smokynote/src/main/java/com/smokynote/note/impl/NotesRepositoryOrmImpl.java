@@ -44,6 +44,11 @@ public class NotesRepositoryOrmImpl implements NotesRepository {
     }
 
     @Override
+    public Note getById(Integer id) {
+        return dao().queryForId(id);
+    }
+
+    @Override
     public void clear() {
         try {
             dao().deleteBuilder().delete();
