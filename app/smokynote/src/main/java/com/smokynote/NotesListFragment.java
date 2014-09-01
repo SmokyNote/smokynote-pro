@@ -17,6 +17,7 @@ import com.cocosw.undobar.UndoBarController;
 import com.smokynote.inject.Injector;
 import com.smokynote.note.Note;
 import com.smokynote.note.NotesRepository;
+import com.smokynote.playback.PlaybackActivity;
 import com.smokynote.timer.TimePickerActivity;
 
 import org.joda.time.DateTime;
@@ -106,6 +107,14 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         }
     }
 
+    // Playback
+
+    private void openPlayback(Note note) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), PlaybackActivity.class);
+        // TODO: pass extras
+        startActivity(intent);
+    }
+
     // Scheduling
 
     private void promptNewSchedule(Note note) {
@@ -188,6 +197,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
     @Override
     public void onMenuRequested(Note note, View anchor) {
+        LOG.debug("Requested context menu for {}", note);
         final Context context = anchor.getContext();
         final MenuBuilder menuBuilder = createMenuBuilder(note, context);
         menuPopupHelper = new MenuPopupHelper(context, menuBuilder, anchor);
@@ -214,6 +224,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
             switch (item.getItemId()) {
                 case R.id.note_action_play:
                     LOG.info("Selected Play action for Note {}", targetNote);
+                    openPlayback(targetNote);
                     return true;
                 case R.id.note_action_schedule:
                     LOG.info("Selected Schedule action for Note {}", targetNote);

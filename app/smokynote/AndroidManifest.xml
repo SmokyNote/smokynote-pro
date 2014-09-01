@@ -44,5 +44,12 @@
                   android:theme="@style/Theme.Styled.DialogLike"
                   android:noHistory="true"
                   android:excludeFromRecents="true"/>
+
+        <!-- TODO: different playback icon -->
+        <activity android:name=".playback.PlaybackActivity"
+                  android:label="@string/playback_title"
+                  android:theme="@style/Theme.Styled.DialogLike"
+                  android:noHistory="true"
+                  android:excludeFromRecents="true"/>
     </application>
 </manifest>
