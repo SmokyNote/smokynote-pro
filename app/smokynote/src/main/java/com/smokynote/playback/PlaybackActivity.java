@@ -10,11 +10,18 @@ import com.actionbarsherlock.view.MenuItem;
 import com.smokynote.R;
 import com.smokynote.activity.DialogActivity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Maksim Zakharov
  * @since 1.0
  */
 public class PlaybackActivity extends DialogActivity {
+
+    private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.PLAY");
+
+    public static final String EXTRA_NOTE = "targetNote";
 
     private PlaybackFragment playbackFragment;
 
@@ -22,17 +29,44 @@ public class PlaybackActivity extends DialogActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (!validateExtras()) {
+            LOG.error("No Note passed to play. Force finish.");
+            finish();
+            return;
+        }
+
         setContentView(R.layout.dialog_activity);
 
+        initPlaybackFragment();
+    }
+
+    private boolean validateExtras() {
+        return getIntent().hasExtra(EXTRA_NOTE);
+    }
+
+    private void initPlaybackFragment() {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         playbackFragment = (PlaybackFragment) fragmentManager.findFragmentById(R.id.dialog_fragment);
         if (playbackFragment == null) {
-            playbackFragment = new PlaybackFragment();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.dialog_fragment, playbackFragment)
-                    .commit();
-            playbackFragment.startPlayback();
+            doInitPlaybackFragment();
         }
+    }
+
+    private void doInitPlaybackFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        playbackFragment = new PlaybackFragment();
+        playbackFragment.setArguments(constructFragmentArguments());
+        fragmentManager.beginTransaction()
+                .replace(R.id.dialog_fragment, playbackFragment)
+                .commit();
+        playbackFragment.startPlayback();
+    }
+
+    private Bundle constructFragmentArguments() {
+        final Bundle arguments = new Bundle();
+        // Constant values may change some day, so we repackage arguments.
+        arguments.putSerializable(PlaybackFragment.EXTRA_NOTE, getIntent().getSerializableExtra(EXTRA_NOTE));
+        return arguments;
     }
 
     @Override

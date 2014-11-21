@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:gravity="center"
     android:layout_width="180dip"
-    android:layout_height="180dip"
-    android:keepScreenOn="true">
+    android:layout_height="180dip">
 
+    <ToggleButton
+        android:id="@+id/play_stop_button"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:textOff="@string/playback_play"
+        android:textOn="@string/playback_stop"
+        android:textColor="@android:color/transparent"
+        android:background="@drawable/toggle_play"/>
 </LinearLayout>

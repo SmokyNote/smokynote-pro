@@ -111,7 +111,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
     private void openPlayback(Note note) {
         Intent intent = new Intent(getActivity().getApplicationContext(), PlaybackActivity.class);
-        // TODO: pass extras
+        intent.putExtra(PlaybackActivity.EXTRA_NOTE, note);
         startActivity(intent);
     }
 

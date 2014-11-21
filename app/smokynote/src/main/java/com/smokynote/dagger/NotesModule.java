@@ -24,7 +24,6 @@ import javax.inject.Singleton;
         NotesListActivity.class,
         NotesListFragment.class,
         RecordFragment.class,
-        PlaybackFragment.class,
 
         NotesRepositoryOrmImpl.class,
 })
