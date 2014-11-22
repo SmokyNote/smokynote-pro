@@ -16,6 +16,7 @@ import com.smokynote.R;
 import com.smokynote.note.Note;
 import com.smokynote.note.NoteBuilder;
 import com.smokynote.note.NotesRepository;
+import com.smokynote.playback.PlaybackActivity;
 import com.smokynote.record.RecordActivity;
 
 import org.joda.time.DateTime;
@@ -90,6 +91,22 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
         });
 
         assertFalse("Note must be disabled", repository.getAll().get(0).isEnabled());
+    }
+
+    @SmallTest
+    public void testPlaybackCalled() {
+        // Prepare repository before #getActivity() first call
+        prepareNotesRepository();
+        final Solo solo = new Solo(getInstrumentation(), getActivity());
+
+        // Open context menu
+        final View contextMenuButton = getActivity().findViewById(R.id.note_actions);
+        solo.clickOnView(contextMenuButton);
+
+        // Choose playback
+        solo.clickOnText(getActivity().getResources().getString(R.string.note_action_play));
+
+        solo.assertCurrentActivity("PlaybackActivity should be launched", PlaybackActivity.class);
     }
 
     @MediumTest
