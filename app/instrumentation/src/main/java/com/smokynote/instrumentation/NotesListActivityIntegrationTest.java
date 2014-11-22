@@ -97,16 +97,19 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
     public void testPlaybackCalled() {
         // Prepare repository before #getActivity() first call
         prepareNotesRepository();
-        final Solo solo = new Solo(getInstrumentation(), getActivity());
 
-        // Open context menu
-        final View contextMenuButton = getActivity().findViewById(R.id.note_actions);
-        solo.clickOnView(contextMenuButton);
+        final Instrumentation instrumentation = getInstrumentation();
 
-        // Choose playback
-        solo.clickOnText(getActivity().getResources().getString(R.string.note_action_play));
+        final Instrumentation.ActivityMonitor monitor =
+                instrumentation.addMonitor(PlaybackActivity.class.getName(), null, true);
 
-        solo.assertCurrentActivity("PlaybackActivity should be launched", PlaybackActivity.class);
+        final Solo solo = new Solo(instrumentation, getActivity());
+
+        openContextMenu(solo);
+        clickOnText(solo, R.string.note_action_play);
+
+        instrumentation.waitForMonitorWithTimeout(monitor, 2000);
+        assertTrue(instrumentation.checkMonitorHit(monitor, 1));
     }
 
     @MediumTest
@@ -117,19 +120,26 @@ public class NotesListActivityIntegrationTest extends ActivityInstrumentationTes
         final Solo solo = new Solo(getInstrumentation(), getActivity());
 
         // Step 1: delete
-        final View contextMenuButton = getActivity().findViewById(R.id.note_actions);
-        solo.clickOnView(contextMenuButton);
-
-        solo.clickOnText(getActivity().getResources().getString(R.string.note_action_delete));
+        openContextMenu(solo);
+        clickOnText(solo, R.string.note_action_delete);
         solo.waitForView(UndoBarController.class, 1, 500);
 
         assertEquals("Note expected to be marked for deletion", 1, repository.getMarkedForDeletion().size());
 
         // Step 2: undo
-        solo.clickOnText(getActivity().getResources().getString(R.string.undo));
+        clickOnText(solo, R.string.undo);
         waitForNoView(solo, UndoBarController.class, 500);
 
         assertEquals("Note expected to be restored", 0, repository.getMarkedForDeletion().size());
+    }
+
+    private void openContextMenu(Solo solo) {
+        final View contextMenuButton = getActivity().findViewById(R.id.note_actions);
+        solo.clickOnView(contextMenuButton);
+    }
+
+    private void clickOnText(Solo solo, int resource) {
+        solo.clickOnText(getActivity().getResources().getString(resource));
     }
 
     private void waitForNoView(Solo solo, Class<? extends View> aClass, int timeout) {
