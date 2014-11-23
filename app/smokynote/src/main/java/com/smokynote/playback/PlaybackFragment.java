@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.Nullable;
 
@@ -36,6 +38,8 @@ public class PlaybackFragment extends SherlockFragment {
     private MediaPlayer mediaPlayer;
     @Nullable
     private CompoundButton playStopButton;
+
+    private Queue<Runnable> activityRunnables = new ConcurrentLinkedQueue<Runnable>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,10 @@ public class PlaybackFragment extends SherlockFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        startPlayback();
+        while (!activityRunnables.isEmpty()) {
+            Runnable r = activityRunnables.remove();
+            r.run();
+        }
     }
 
     @Override
@@ -82,7 +89,7 @@ public class PlaybackFragment extends SherlockFragment {
         super.onDestroy();
     }
 
-    private void startPlayback() {
+    public void startPlayback() {
         LOG.info("Start playback");
 
         initMediaPlayer();
@@ -176,6 +183,20 @@ public class PlaybackFragment extends SherlockFragment {
     }
 
     private void showFileError() {
+        final Activity activity = getActivity();
+        if (activity == null) {
+            activityRunnables.add(new Runnable() {
+                @Override
+                public void run() {
+                    doShowFileError();
+                }
+            });
+        } else {
+            doShowFileError();
+        }
+    }
+
+    private void doShowFileError() {
         new UndoBarController.UndoBar(getActivity())
                 .message(R.string.playback_error_file)
                 .style(UndoBarController.MESSAGESTYLE)

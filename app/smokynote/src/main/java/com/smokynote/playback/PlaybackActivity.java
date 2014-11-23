@@ -59,6 +59,8 @@ public class PlaybackActivity extends DialogActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.dialog_fragment, playbackFragment)
                 .commit();
+
+        playbackFragment.startPlayback();
     }
 
     private Bundle constructFragmentArguments() {
