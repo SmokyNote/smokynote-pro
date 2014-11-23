@@ -1,5 +1,6 @@
 package com.smokynote.playback;
 
+import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.cocosw.undobar.UndoBarController;
 import com.smokynote.R;
 import com.smokynote.note.Note;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.annotation.Nullable;
@@ -66,13 +69,20 @@ public class PlaybackFragment extends SherlockFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        startPlayback();
+    }
+
+    @Override
     public void onDestroy() {
         releaseMediaPlayer();
 
         super.onDestroy();
     }
 
-    public void startPlayback() {
+    private void startPlayback() {
         LOG.info("Start playback");
 
         initMediaPlayer();
@@ -100,6 +110,15 @@ public class PlaybackFragment extends SherlockFragment {
     private void doStartPlayback() {
         assert mediaPlayer != null;
 
+        final String filename = getFilename();
+        if (!new File(filename).exists()) {
+            LOG.error("Requested file '{}' doesn't exist", filename);
+            // TODO: check if external SD is mounted and not available. It is not the same that file deletion.
+            setActionButtonState(State.STOPPED);
+            showFileError();
+            return;
+        }
+
         try {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -108,15 +127,16 @@ public class PlaybackFragment extends SherlockFragment {
                     handlePlaybackFinished();
                 }
             });
-            mediaPlayer.setDataSource(getFilename());
+            mediaPlayer.setDataSource(filename);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
             mediaPlayer.prepare();
             mediaPlayer.start();
 
+            LOG.debug("Playback started");
+
             setActionButtonState(State.PLAYING);
         } catch (IOException e) {
-            // TODO: check if external SD is mounted and not available. It is not the same that file deletion.
             LOG.error("Unable to play stored media.", e);
             // TODO: show friendly message with retry option
         }
@@ -153,6 +173,13 @@ public class PlaybackFragment extends SherlockFragment {
         if (playStopButton != null) {
             playStopButton.setChecked(state == State.PLAYING);
         }
+    }
+
+    private void showFileError() {
+        new UndoBarController.UndoBar(getActivity())
+                .message(R.string.playback_error_file)
+                .style(UndoBarController.MESSAGESTYLE)
+                .show();
     }
 
     private static enum State {
