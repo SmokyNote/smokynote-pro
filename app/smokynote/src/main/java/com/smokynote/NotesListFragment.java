@@ -1,9 +1,12 @@
 package com.smokynote;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +44,17 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
     @Inject
     /* private */ NotesRepository notesRepository;
+    @Inject
+    /* private */ LocalBroadcastManager broadcastManager;
 
     private NotesListAdapter notesListAdapter;
     private MenuPopupHelper menuPopupHelper;
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            handleNotesChanged();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +81,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
         notesListAdapter.setNotes(notesRepository.getAll());
         notesListAdapter.start();
+        registerListeners();
     }
 
     @Override
@@ -77,6 +89,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         super.onPause();
 
         notesListAdapter.stop();
+        unregisterListeners();
     }
 
     @Override
@@ -92,7 +105,8 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
     public void onEnable(Note note, boolean enabled) {
         note.setEnabled(enabled);
         notesRepository.save(note);
-        // TODO: broadcast, so we can (un)schedule alarm.
+
+        broadcastManager.sendBroadcast(createScheduleIntent());
     }
 
     @Override
@@ -105,6 +119,27 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
                 LOG.warn("Unhandled activity result, requestCode = {}", requestCode);
                 super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    // Listeners
+
+    private void registerListeners() {
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction("smokynote.schedule");
+
+        broadcastManager.registerReceiver(broadcastReceiver, filter);
+    }
+
+    private void unregisterListeners() {
+        broadcastManager.unregisterReceiver(broadcastReceiver);
+    }
+
+    private void handleNotesChanged() {
+        notesListAdapter.setNotes(notesRepository.getAll());
+    }
+
+    private Intent createScheduleIntent() {
+        return new Intent("smokynote.schedule");
     }
 
     // Playback
@@ -151,7 +186,8 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         final Note note = notesRepository.getById(noteId);
         note.setSchedule(schedule);
         notesRepository.save(note);
-        // TODO: broadcast
+
+        broadcastManager.sendBroadcast(createScheduleIntent());
     }
 
     // Deleting
@@ -164,7 +200,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
     private void deleteNote(Integer noteId) {
         notesRepository.markDeleted(noteId, true);
 
-        // TODO: broadcast
+        broadcastManager.sendBroadcast(createScheduleIntent());
 
         showDeleteUndoBar(noteId);
     }
@@ -190,7 +226,8 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         Bundle bundle = (Bundle) token;
         Integer noteId = bundle.getInt(EXTRA_NOTE_ID);
         notesRepository.markDeleted(noteId, false);
-        // TODO: broadcast
+
+        broadcastManager.sendBroadcast(createScheduleIntent());
     }
 
     // Context menu

@@ -58,7 +58,7 @@ public class Application extends android.app.Application implements Injector {
     }
 
     private SysModule createSysModule() {
-        return new SysModule(scheduledExecutorService, databaseHelper);
+        return new SysModule(this.getApplicationContext(), scheduledExecutorService, databaseHelper);
     }
 
     private NotesModule createNotesModule() {
