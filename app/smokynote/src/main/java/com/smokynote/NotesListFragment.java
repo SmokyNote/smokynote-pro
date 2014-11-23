@@ -42,6 +42,11 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
     private static final String EXTRA_NOTE_ID = "targetNoteId";
 
+    public static final String ACTION_SCHEDULE = "smokynote.note.schedule";
+    public static final String ACTION_ENABLE = "smokynote.note.enable";
+    public static final String ACTION_DELETE = "smokynote.note.delete";
+    public static final String ACTION_RESTORE = "smokynote.note.restore";
+
     @Inject
     /* private */ NotesRepository notesRepository;
     @Inject
@@ -106,7 +111,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         note.setEnabled(enabled);
         notesRepository.save(note);
 
-        broadcastManager.sendBroadcast(createScheduleIntent());
+        broadcastManager.sendBroadcast(new Intent(ACTION_ENABLE));
     }
 
     @Override
@@ -125,7 +130,9 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
     private void registerListeners() {
         final IntentFilter filter = new IntentFilter();
-        filter.addAction("smokynote.schedule");
+        filter.addAction(ACTION_SCHEDULE);
+        filter.addAction(ACTION_DELETE);
+        filter.addAction(ACTION_RESTORE);
 
         broadcastManager.registerReceiver(broadcastReceiver, filter);
     }
@@ -136,10 +143,6 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
 
     private void handleNotesChanged() {
         notesListAdapter.setNotes(notesRepository.getAll());
-    }
-
-    private Intent createScheduleIntent() {
-        return new Intent("smokynote.schedule");
     }
 
     // Playback
@@ -187,7 +190,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         note.setSchedule(schedule);
         notesRepository.save(note);
 
-        broadcastManager.sendBroadcast(createScheduleIntent());
+        broadcastManager.sendBroadcast(new Intent(ACTION_SCHEDULE));
     }
 
     // Deleting
@@ -200,7 +203,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
     private void deleteNote(Integer noteId) {
         notesRepository.markDeleted(noteId, true);
 
-        broadcastManager.sendBroadcast(createScheduleIntent());
+        broadcastManager.sendBroadcast(new Intent(ACTION_DELETE));
 
         showDeleteUndoBar(noteId);
     }
@@ -227,7 +230,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         Integer noteId = bundle.getInt(EXTRA_NOTE_ID);
         notesRepository.markDeleted(noteId, false);
 
-        broadcastManager.sendBroadcast(createScheduleIntent());
+        broadcastManager.sendBroadcast(new Intent(ACTION_RESTORE));
     }
 
     // Context menu
