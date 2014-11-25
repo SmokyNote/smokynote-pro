@@ -15,12 +15,35 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
             android:name=".Application"
             android:label="@string/app_name"
             android:theme="@style/Theme.Styled"
             android:icon="@drawable/ic_launcher_smokynote">
+
+        <receiver android:name=".alarm.ScheduleReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="smokynote.note.schedule"/>
+                <action android:name="smokynote.note.enable"/>
+                <action android:name="smokynote.note.delete"/>
+                <action android:name="smokynote.note.restore"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".alarm.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".alarm.PackageReplacedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
 
         <activity
                 android:name=".NotesListActivity"

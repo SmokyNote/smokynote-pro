@@ -34,6 +34,11 @@ public class Application extends android.app.Application implements Injector {
     }
 
     @Override
+    public <T> T resolve(Class<T> targetClass) {
+        return objectGraph.get(targetClass);
+    }
+
+    @Override
     public synchronized void onCreate() {
         super.onCreate();
 

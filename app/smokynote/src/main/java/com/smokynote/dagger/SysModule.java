@@ -1,5 +1,6 @@
 package com.smokynote.dagger;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -32,6 +33,12 @@ public class SysModule {
     @Singleton
     public LocalBroadcastManager provideLocalBroadcastManager() {
         return LocalBroadcastManager.getInstance(context);
+    }
+
+    @Provides
+    @Singleton
+    public AlarmManager provideAlarmManager() {
+        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
     @Provides

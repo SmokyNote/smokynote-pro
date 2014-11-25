@@ -14,4 +14,6 @@ public interface Injector {
      * @param target object to inject dependencies to
      */
     void inject(Object target);
+
+    <T> T resolve(Class<T> targetClass);
 }
