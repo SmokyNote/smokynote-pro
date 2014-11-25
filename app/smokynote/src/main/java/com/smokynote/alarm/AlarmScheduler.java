@@ -2,7 +2,11 @@ package com.smokynote.alarm;
 
 import android.app.AlarmManager;
 
+import com.smokynote.note.Note;
 import com.smokynote.note.NotesRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -13,6 +17,8 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class AlarmScheduler {
+
+    private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.SCHEDULER");
 
     private final NotesRepository repository;
     private final AlarmManager alarmManager;
@@ -29,6 +35,23 @@ public class AlarmScheduler {
      * @return true if alarm was set otherwise false
      */
     public boolean schedule() {
-        return false;
+        Note nextNote = repository.findNext();
+        if (nextNote == null) {
+            removeAlarm();
+            return false;
+        } else {
+            scheduleAlarm(nextNote);
+            return true;
+        }
+    }
+
+    private void removeAlarm() {
+        LOG.info("Unscheduled alarms.");
+        // TODO
+    }
+
+    private void scheduleAlarm(Note note) {
+        LOG.info("Scheduled alarm for {}.", note);
+        // TODO
     }
 }

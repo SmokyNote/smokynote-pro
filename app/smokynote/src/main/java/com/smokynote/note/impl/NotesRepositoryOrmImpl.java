@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 /**
@@ -24,6 +25,22 @@ public class NotesRepositoryOrmImpl implements NotesRepository {
     @Inject
     public NotesRepositoryOrmImpl(DatabaseHelper databaseHelper) {
         this.databaseHelper = databaseHelper;
+    }
+
+    @Nullable
+    @Override
+    public Note findNext() {
+        try {
+            QueryBuilder<Note, Integer> queryBuilder = dao().queryBuilder();
+            queryBuilder.where()
+                    .ge("schedule", DateTime.now()).and()
+                    .eq("enabled", true).and()
+                    .isNull("deletion_time");
+            queryBuilder.orderBy("schedule", true);
+            return queryBuilder.queryForFirst();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Maksim Zakharov
  * @since 1.0
@@ -16,6 +18,13 @@ import java.util.List;
 public class NotesRepositoryInMemoryImpl implements NotesRepository {
 
     private List<Note> notes = new ArrayList<Note>();
+
+    @Nullable
+    @Override
+    public Note findNext() {
+        // TODO
+        return null;
+    }
 
     @Override
     public List<Note> getAll() {

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * @author Maksim Zakharov
  * @since 1.0
  */
-public class ScheduleReceiver extends BroadcastReceiver {
+public class NoteUpdateMonitor extends BroadcastReceiver {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.RCV.SCHEDULE");
 

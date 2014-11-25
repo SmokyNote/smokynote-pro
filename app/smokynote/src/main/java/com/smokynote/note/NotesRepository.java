@@ -2,11 +2,22 @@ package com.smokynote.note;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Maksim Zakharov
  * @since 1.0
  */
 public interface NotesRepository {
+
+    /**
+     * Find Note for next Alarm.
+     * It must be enabled and not marked for deletion.
+     *
+     * @return Note instance if matching exists otherwise <code>null</code>
+     */
+    @Nullable
+    Note findNext();
 
     /**
      * Return all the Notes sorted by schedule, descending.
