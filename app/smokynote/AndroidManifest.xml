@@ -23,6 +23,8 @@
             android:theme="@style/Theme.Styled"
             android:icon="@drawable/ic_launcher_smokynote">
 
+        <receiver android:name=".OnAlarmReceiver"/>
+
         <receiver android:name=".alarm.NoteUpdateMonitor" android:exported="false">
             <intent-filter>
                 <action android:name="smokynote.note.schedule"/>

@@ -22,6 +22,6 @@ public class BootReceiver extends BroadcastReceiver {
         LOG.info("Device boot completed, schedule alarm.");
 
         AlarmScheduler scheduler = ((Injector) context.getApplicationContext()).resolve(AlarmScheduler.class);
-        scheduler.schedule();
+        scheduler.schedule(context);
     }
 }

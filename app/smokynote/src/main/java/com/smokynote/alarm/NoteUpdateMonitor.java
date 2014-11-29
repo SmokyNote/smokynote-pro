@@ -17,11 +17,15 @@ public class NoteUpdateMonitor extends BroadcastReceiver {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.RCV.SCHEDULE");
 
+    public NoteUpdateMonitor() {
+        LOG.info("Initializing NoteUpdateMonitor");
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         LOG.info("Note changed, schedule alarm.");
 
         AlarmScheduler scheduler = ((Injector) context.getApplicationContext()).resolve(AlarmScheduler.class);
-        scheduler.schedule();
+        scheduler.schedule(context);
     }
 }

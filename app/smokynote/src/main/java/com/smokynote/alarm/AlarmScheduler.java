@@ -1,7 +1,11 @@
 package com.smokynote.alarm;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 
+import com.smokynote.OnAlarmReceiver;
 import com.smokynote.note.Note;
 import com.smokynote.note.NotesRepository;
 
@@ -34,24 +38,35 @@ public class AlarmScheduler {
      *
      * @return true if alarm was set otherwise false
      */
-    public boolean schedule() {
+    public boolean schedule(Context context) {
         Note nextNote = repository.findNext();
         if (nextNote == null) {
             removeAlarm();
             return false;
         } else {
-            scheduleAlarm(nextNote);
+            scheduleAlarm(nextNote, context);
             return true;
         }
     }
 
     private void removeAlarm() {
-        LOG.info("Unscheduled alarms.");
-        // TODO
+        // Alarms can't be removed. Instead, we perform additional check when alarm triggers.
     }
 
-    private void scheduleAlarm(Note note) {
-        LOG.info("Scheduled alarm for {}.", note);
-        // TODO
+    private void scheduleAlarm(Note note, Context context) {
+        LOG.info("Scheduling alarm for {}.", note);
+
+        Intent intent = new Intent(context, OnAlarmReceiver.class);
+        // Do not pass Integer or other wrappers to Intent extras
+        intent.putExtra(OnAlarmReceiver.EXTRA_NOTE_ID, note.getId().intValue());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, getRtcTime(note), pendingIntent);
+    }
+
+    private long getRtcTime(Note note) {
+        // Start 2 seconds later than actual time.
+        return note.getSchedule().getMillis() + 2000;
     }
 }

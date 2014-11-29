@@ -23,7 +23,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
             LOG.info("Package replaced, setting alarms.");
 
             AlarmScheduler scheduler = ((Injector) context.getApplicationContext()).resolve(AlarmScheduler.class);
-            scheduler.schedule();
+            scheduler.schedule(context);
         }
     }
 }
