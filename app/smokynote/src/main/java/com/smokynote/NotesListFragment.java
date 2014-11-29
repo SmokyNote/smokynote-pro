@@ -112,6 +112,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         notesRepository.save(note);
 
         broadcastManager.sendBroadcast(new Intent(ACTION_ENABLE));
+        getActivity().sendBroadcast(new Intent(ACTION_ENABLE));
     }
 
     @Override
@@ -191,6 +192,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         notesRepository.save(note);
 
         broadcastManager.sendBroadcast(new Intent(ACTION_SCHEDULE));
+        getActivity().sendBroadcast(new Intent(ACTION_SCHEDULE));
     }
 
     // Deleting
@@ -204,6 +206,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         notesRepository.markDeleted(noteId, true);
 
         broadcastManager.sendBroadcast(new Intent(ACTION_DELETE));
+        getActivity().sendBroadcast(new Intent(ACTION_DELETE));
 
         showDeleteUndoBar(noteId);
     }
@@ -231,6 +234,7 @@ public class NotesListFragment extends SherlockListFragment implements NotesList
         notesRepository.markDeleted(noteId, false);
 
         broadcastManager.sendBroadcast(new Intent(ACTION_RESTORE));
+        getActivity().sendBroadcast(new Intent(ACTION_RESTORE));
     }
 
     // Context menu
