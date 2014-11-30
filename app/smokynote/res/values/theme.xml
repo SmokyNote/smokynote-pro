@@ -7,6 +7,17 @@
         <item name="buttonBarHeight">@dimen/buttonbar_height</item>
     </style>
 
+    <style name="Theme.Styled.Translucent">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="Theme.Styled.DialogLike">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@drawable/dialog_full_holo_light</item>
@@ -14,6 +25,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
 
         <item name="actionBarStyle">@style/Widget.ActionBar.DialogLike</item>

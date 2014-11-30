@@ -77,6 +77,11 @@
                   android:noHistory="true"
                   android:excludeFromRecents="true"/>
 
+        <activity android:name=".alarm.timed.ScreenUnlockActivity"
+                  android:theme="@style/Theme.Styled.Translucent"
+                  android:noHistory="true"
+                  android:excludeFromRecents="true"/>
+
         <activity android:name=".alarm.timed.TimedAlarmActivity"
                   android:label="@string/timed_alarm_title"
                   android:theme="@style/Theme.Styled.DialogLike"

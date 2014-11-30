@@ -3,7 +3,9 @@ package com.smokynote;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
+import com.smokynote.alarm.timed.ScreenUnlockActivity;
 import com.smokynote.alarm.timed.TimedAlarmActivity;
 import com.smokynote.inject.Injector;
 import com.smokynote.note.Note;
@@ -44,9 +46,14 @@ public class OnAlarmReceiver extends BroadcastReceiver {
     }
 
     private void launchAlarmActivity(Context context, int targetNoteId) {
-        Intent intent = new Intent(context, TimedAlarmActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        intent.putExtra(TimedAlarmActivity.EXTRA_NOTE_ID, targetNoteId);
-        context.startActivity(intent);
+        Intent unlockIntent = new Intent(context, ScreenUnlockActivity.class);
+        unlockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        unlockIntent.putExtra(ScreenUnlockActivity.EXTRA_TARGET_CLASS, TimedAlarmActivity.class);
+        Bundle extras = new Bundle();
+        extras.putInt(TimedAlarmActivity.EXTRA_NOTE_ID, targetNoteId);
+        unlockIntent.putExtra(ScreenUnlockActivity.EXTRA_TARGET_CLASS_EXTRAS, extras);
+
+        context.startActivity(unlockIntent);
     }
 }
