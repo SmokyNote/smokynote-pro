@@ -7,6 +7,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.smokynote.R;
 import com.smokynote.activity.DialogActivity;
 
@@ -104,6 +106,28 @@ public class TimedAlarmActivity extends DialogActivity {
                 snooze();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (shouldUseActionsInsteadOfButtonBar()) {
+            getSupportMenuInflater().inflate(R.menu.timed_alarm_menu, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.dismiss:
+                dismiss();
+                return true;
+            case R.id.snooze:
+                snooze();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void dismiss() {
