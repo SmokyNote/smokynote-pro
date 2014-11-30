@@ -38,7 +38,16 @@ public class TimePickerFragment extends SherlockFragment {
 
         datePicker.updateDate(targetTime.getYear(), targetTime.getMonthOfYear() - 1, targetTime.getDayOfMonth());
         if (Build.VERSION.SDK_INT >= 11) {
-            datePicker.setMinDate(getMinDateInMilliseconds());
+            try {
+                datePicker.setMinDate(getMinDateInMilliseconds());
+            } catch (IllegalArgumentException e) {
+                // Workaround for really slow phones.
+                try {
+                    datePicker.setMinDate(getMinDateInMilliseconds() - 5000L);
+                } catch (IllegalArgumentException again) {
+                    // Okay..
+                }
+            }
         }
         timePicker.setIs24HourView(DateFormat.is24HourFormat(getActivity()));
         timePicker.setCurrentHour(targetTime.getHourOfDay());
