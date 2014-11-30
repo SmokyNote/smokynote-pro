@@ -3,7 +3,6 @@ package com.smokynote.alarm.timed;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -30,11 +29,6 @@ public class TimedAlarmActivity extends DialogActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.ALARM");
 
-    private static final int WINDOW_FLAGS = WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-            | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-            | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
-
     public static final String EXTRA_NOTE_ID = "targetNoteId";
 
     @Inject
@@ -56,8 +50,6 @@ public class TimedAlarmActivity extends DialogActivity {
         }
 
         LOG.info("Initializing Alarm activity");
-
-        getWindow().addFlags(WINDOW_FLAGS);
 
         setContentView(R.layout.dialog_activity);
 
@@ -86,7 +78,7 @@ public class TimedAlarmActivity extends DialogActivity {
                 .replace(R.id.dialog_fragment, timedAlarmFragment)
                 .commit();
 
-        timedAlarmFragment.startAlarm();
+        timedAlarmFragment.startAlarm(this);
     }
 
     private Bundle constructFragmentArguments() {
@@ -159,7 +151,6 @@ public class TimedAlarmActivity extends DialogActivity {
         final Note note = getTargetNote();
         LOG.info("Dismiss note {}", note);
 
-        note.setEnabled(false);
         notesRepository.save(note);
         alarmScheduler.schedule(this);
 

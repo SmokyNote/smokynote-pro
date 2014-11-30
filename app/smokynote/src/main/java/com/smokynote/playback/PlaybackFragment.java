@@ -159,7 +159,7 @@ public class PlaybackFragment extends SherlockFragment {
         setActionButtonState(State.STOPPED);
     }
 
-    private void handleActionButtonClick(CompoundButton button) {
+    protected void handleActionButtonClick(CompoundButton button) {
         if (button.isChecked()) {
             startPlayback();
         } else {
