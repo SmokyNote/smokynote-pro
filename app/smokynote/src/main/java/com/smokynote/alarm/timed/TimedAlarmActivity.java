@@ -11,9 +11,16 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.smokynote.R;
 import com.smokynote.activity.DialogActivity;
+import com.smokynote.alarm.AlarmScheduler;
+import com.smokynote.inject.Injector;
+import com.smokynote.note.Note;
+import com.smokynote.note.NotesRepository;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 /**
  * @author Maksim Zakharov
@@ -28,7 +35,13 @@ public class TimedAlarmActivity extends DialogActivity {
             | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
             | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
 
-    public static final String EXTRA_NOTE = "targetNote";
+    public static final String EXTRA_NOTE_ID = "targetNoteId";
+
+    @Inject
+    AlarmScheduler alarmScheduler;
+
+    @Inject
+    NotesRepository notesRepository;
 
     private TimedAlarmFragment timedAlarmFragment;
 
@@ -48,11 +61,13 @@ public class TimedAlarmActivity extends DialogActivity {
 
         setContentView(R.layout.dialog_activity);
 
+        ((Injector) getApplication()).inject(this);
+
         initFragment();
     }
 
     private boolean validateExtras() {
-        return getIntent().hasExtra(EXTRA_NOTE);
+        return getIntent().hasExtra(EXTRA_NOTE_ID);
     }
 
     private void initFragment() {
@@ -77,8 +92,13 @@ public class TimedAlarmActivity extends DialogActivity {
     private Bundle constructFragmentArguments() {
         final Bundle arguments = new Bundle();
         // Constant values may change some day, so we repackage arguments.
-        arguments.putSerializable(TimedAlarmFragment.EXTRA_NOTE, getIntent().getSerializableExtra(EXTRA_NOTE));
+        arguments.putSerializable(TimedAlarmFragment.EXTRA_NOTE, getTargetNote());
         return arguments;
+    }
+
+    private Note getTargetNote() {
+        int targetNoteId = getIntent().getIntExtra(EXTRA_NOTE_ID, -1);
+        return notesRepository.getById(targetNoteId);
     }
 
     @Override
@@ -130,11 +150,32 @@ public class TimedAlarmActivity extends DialogActivity {
         }
     }
 
-    private void dismiss() {
+    @Override
+    public void onBackPressed() {
+        snooze();
+    }
 
+    private void dismiss() {
+        final Note note = getTargetNote();
+        LOG.info("Dismiss note {}", note);
+
+        note.setEnabled(false);
+        notesRepository.save(note);
+        alarmScheduler.schedule(this);
+
+        finish();
     }
 
     private void snooze() {
+        final Note note = getTargetNote();
+        LOG.info("Snooze note {}", note);
 
+        note.setEnabled(true);
+        note.setSchedule(DateTime.now().plusMinutes(5));
+        notesRepository.save(note);
+        alarmScheduler.schedule(this);
+
+        finish();
+        // TODO: toast
     }
 }

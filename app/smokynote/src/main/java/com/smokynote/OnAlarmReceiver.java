@@ -38,15 +38,15 @@ public class OnAlarmReceiver extends BroadcastReceiver {
             } else if (!note.isEnabled()) {
                 LOG.warn("Note #{} disabled, abort alarm", noteId);
             } else {
-                launchAlarmActivity(context, note);
+                launchAlarmActivity(context, noteId);
             }
         }
     }
 
-    private void launchAlarmActivity(Context context, Note note) {
+    private void launchAlarmActivity(Context context, int targetNoteId) {
         Intent intent = new Intent(context, TimedAlarmActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        intent.putExtra(TimedAlarmActivity.EXTRA_NOTE, note);
+        intent.putExtra(TimedAlarmActivity.EXTRA_NOTE_ID, targetNoteId);
         context.startActivity(intent);
     }
 }

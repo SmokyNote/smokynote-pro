@@ -3,6 +3,7 @@ package com.smokynote.dagger;
 import com.smokynote.NotesListActivity;
 import com.smokynote.NotesListFragment;
 import com.smokynote.alarm.AlarmScheduler;
+import com.smokynote.alarm.timed.TimedAlarmActivity;
 import com.smokynote.note.NotesRepository;
 import com.smokynote.note.impl.NotesRepositoryOrmImpl;
 import com.smokynote.record.RecordFragment;
@@ -25,6 +26,7 @@ import javax.inject.Singleton;
         NotesListActivity.class,
         NotesListFragment.class,
         RecordFragment.class,
+        TimedAlarmActivity.class,
 
         NotesRepositoryOrmImpl.class,
 })
