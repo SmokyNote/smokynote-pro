@@ -76,5 +76,11 @@
                   android:theme="@style/Theme.Styled.DialogLike"
                   android:noHistory="true"
                   android:excludeFromRecents="true"/>
+
+        <activity android:name=".alarm.timed.TimedAlarmActivity"
+                  android:label="@string/timed_alarm_title"
+                  android:theme="@style/Theme.Styled.DialogLike"
+                  android:noHistory="true"
+                  android:excludeFromRecents="true"/>
     </application>
 </manifest>

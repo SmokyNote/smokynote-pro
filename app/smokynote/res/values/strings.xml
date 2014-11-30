@@ -26,4 +26,8 @@
     <string name="note_action_play">Play</string>
     <string name="note_action_schedule">Schedule</string>
     <string name="note_action_delete">Delete</string>
+
+    <string name="timed_alarm_title">Reminder</string>
+    <string name="timed_alarm_dismiss">Dismiss</string>
+    <string name="timed_alarm_snooze">Snooze</string>
 </resources>
