@@ -4,6 +4,8 @@ import com.smokynote.dagger.NotesModule;
 import com.smokynote.dagger.SysModule;
 import com.smokynote.inject.Injector;
 import com.smokynote.orm.DatabaseHelper;
+import com.yandex.metrica.YandexMetrica;
+
 import dagger.ObjectGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,8 @@ public class Application extends android.app.Application implements Injector {
         super.onCreate();
 
         initDependencyGraph();
+
+        YandexMetrica.initialize(getApplicationContext(), "30707");
 
         LOG.debug("Application created");
     }

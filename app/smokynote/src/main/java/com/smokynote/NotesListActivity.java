@@ -7,11 +7,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.smokynote.activity.BaseFragmentActivity;
 import com.smokynote.inject.Injector;
+import com.smokynote.note.Note;
 import com.smokynote.note.NoteBuilder;
 import com.smokynote.note.NotesRepository;
-import com.smokynote.note.Note;
 import com.smokynote.record.RecordActivity;
 import com.smokynote.timer.TimePickerActivity;
 
@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * @author Maksim Zakharov
  * @since 1.0
  */
-public class NotesListActivity extends SherlockFragmentActivity {
+public class NotesListActivity extends BaseFragmentActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger("SMOKYNOTE.NOTES");
 

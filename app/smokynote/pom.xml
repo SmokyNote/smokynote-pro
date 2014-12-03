@@ -69,6 +69,13 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-android</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.yandex.android</groupId>
+            <artifactId>mobmetricalib</artifactId>
+            <version>1.60</version>
+            <type>aar</type>
+        </dependency>
     </dependencies>
 
     <!--default case. acts when no profile selected-->

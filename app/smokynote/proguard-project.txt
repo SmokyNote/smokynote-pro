@@ -131,3 +131,7 @@
     @javax.inject.Inject <init>(...);
     <init>();
 }
+
+# Yandex.Metrica
+-keep class com.yandex.metrica.** { *; }
+-dontwarn com.yandex.metrica.**
