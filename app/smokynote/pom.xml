@@ -144,6 +144,7 @@
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                         <configuration>
+                            <release>true</release>
                             <sign>
                                 <debug>false</debug>
                             </sign>
