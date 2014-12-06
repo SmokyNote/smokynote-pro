@@ -2,6 +2,7 @@ package com.smokynote.note.impl;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.smokynote.note.NaturalNoteComparator;
 import com.smokynote.note.Note;
 import com.smokynote.note.NotesRepository;
 import com.smokynote.orm.DatabaseHelper;
@@ -9,6 +10,7 @@ import com.smokynote.orm.DatabaseHelper;
 import org.joda.time.DateTime;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -48,8 +50,9 @@ public class NotesRepositoryOrmImpl implements NotesRepository {
         try {
             QueryBuilder<Note, Integer> queryBuilder = dao().queryBuilder();
             queryBuilder.where().isNull("deletion_time");
-            queryBuilder.orderBy("schedule", false);
-            return queryBuilder.query();
+            List<Note> notes = queryBuilder.query();
+            Collections.sort(notes, new NaturalNoteComparator());
+            return notes;
         } catch (SQLException e) {
             // RuntimeExceptionDao is not so runtime in some cases.
             throw new RuntimeException(e);
