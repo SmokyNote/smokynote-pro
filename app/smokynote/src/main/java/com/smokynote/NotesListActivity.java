@@ -2,12 +2,15 @@ package com.smokynote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.smokynote.activity.BaseFragmentActivity;
+import com.smokynote.alarm.timed.TimedAlarmFragment;
 import com.smokynote.inject.Injector;
 import com.smokynote.note.Note;
 import com.smokynote.note.NoteBuilder;
@@ -50,6 +53,7 @@ public class NotesListActivity extends BaseFragmentActivity {
 
         initActionBar();
         initRecordButton();
+        initFragment();
     }
 
     private void initActionBar() {
@@ -65,6 +69,22 @@ public class NotesListActivity extends BaseFragmentActivity {
                 launchRecordActivity();
             }
         });
+    }
+
+    private void initFragment() {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment fragment = fragmentManager.findFragmentById(R.id.notes_list);
+        if (fragment == null) {
+            doInitFragment();
+        }
+    }
+
+    private void doInitFragment() {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment noteListFragment = new NotesListFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.notes_list, noteListFragment)
+                .commitAllowingStateLoss();
     }
 
     private void launchRecordActivity() {
