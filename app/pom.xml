@@ -23,6 +23,23 @@
         <module>instrumentation</module>
     </modules>
 
+    <scm>
+        <url>http://github.com/SmokyNote/smokynote-pro/tree/${scm.branch}</url>
+        <connection>scm:git:git://github.com/SmokyNote/smokynote-pro.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/SmokyNote/smokynote-pro.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>Github Issue Tracking</system>
+        <url>https://github.com/SmokyNote/smokynote-pro/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis</system>
+        <url>https://travis-ci.org/SmokyNote/smokynote-pro</url>
+    </ciManagement>
+
     <dependencyManagement>
         <dependencies>
             <!-- https://github.com/mosabua/maven-android-sdk-deployer -->
@@ -141,4 +158,8 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <properties>
+        <scm.branch>master</scm.branch>
+    </properties>
 </project>
