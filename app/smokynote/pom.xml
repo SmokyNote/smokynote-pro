@@ -93,6 +93,7 @@
     <profiles>
         <!-- needs additional config/parameters to work: a keystore along with access data to it.
             parameters for the keystore as seen below-->
+        <!-- Note that ProGuard doesn't work with JDK 1.8, you'll need to install at most 1.7 to perform release. -->
         <profile>
             <!-- release profile. uses keystore defined in keystore.* properties. signs and zipaligns the app to the target folder-->
             <id>release</id>
