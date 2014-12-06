@@ -76,6 +76,7 @@
 -keep interface android.support.v4.app.** { *; }
 -keep class com.actionbarsherlock.** { *; }
 -keep interface com.actionbarsherlock.** { *; }
+-dontwarn android.support.v4.**
 
 
 # Annotations support
@@ -131,6 +132,8 @@
     @javax.inject.Inject <init>(...);
     <init>();
 }
+
+-dontwarn org.joda.time.**
 
 # Yandex.Metrica
 -keep class com.yandex.metrica.** { *; }
