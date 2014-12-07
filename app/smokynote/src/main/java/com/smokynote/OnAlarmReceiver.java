@@ -39,13 +39,17 @@ public class OnAlarmReceiver extends BroadcastReceiver {
             final Note note = notesRepository.getById(noteId);
             if (note == null) {
                 LOG.warn("Note with id {} not found!", noteId);
+                final AlarmScheduler scheduler = injector.resolve(AlarmScheduler.class);
+                scheduler.schedule(context);
             } else if (note.isDeleted()) {
                 // TODO: add tests covering this case
                 LOG.info("Note #{} was deleted, run scheduler", noteId);
                 final AlarmScheduler scheduler = injector.resolve(AlarmScheduler.class);
                 scheduler.schedule(context);
             } else if (!note.isEnabled()) {
-                LOG.warn("Note #{} disabled, abort alarm", noteId);
+                LOG.warn("Note #{} disabled, abort alarm and run scheduler", noteId);
+                final AlarmScheduler scheduler = injector.resolve(AlarmScheduler.class);
+                scheduler.schedule(context);
             } else {
                 launchAlarmActivity(context, noteId);
             }
