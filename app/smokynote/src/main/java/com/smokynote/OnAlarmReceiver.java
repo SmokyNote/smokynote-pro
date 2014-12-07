@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.smokynote.alarm.AlarmScheduler;
 import com.smokynote.alarm.timed.ScreenUnlockActivity;
 import com.smokynote.alarm.timed.TimedAlarmActivity;
 import com.smokynote.inject.Injector;
@@ -33,10 +34,16 @@ public class OnAlarmReceiver extends BroadcastReceiver {
             // Wuuuuuut
             LOG.warn("Note id not passed");
         } else {
-            NotesRepository notesRepository = ((Injector) context.getApplicationContext()).resolve(NotesRepository.class);
-            Note note = notesRepository.getById(noteId);
+            final Injector injector = (Injector) context.getApplicationContext();
+            final NotesRepository notesRepository = injector.resolve(NotesRepository.class);
+            final Note note = notesRepository.getById(noteId);
             if (note == null) {
                 LOG.warn("Note with id {} not found!", noteId);
+            } else if (note.isDeleted()) {
+                // TODO: add tests covering this case
+                LOG.info("Note #{} was deleted, run scheduler", noteId);
+                final AlarmScheduler scheduler = injector.resolve(AlarmScheduler.class);
+                scheduler.schedule(context);
             } else if (!note.isEnabled()) {
                 LOG.warn("Note #{} disabled, abort alarm", noteId);
             } else {
