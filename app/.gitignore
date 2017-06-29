@@ -1,3 +1,2 @@
-.idea/
-*.iml
-classes/
+gen-external-apklibs/
+target/
