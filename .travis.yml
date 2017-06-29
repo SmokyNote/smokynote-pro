@@ -23,14 +23,9 @@ before_install:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
 
-  # Maven SDK deployer
-  - git clone git://github.com/mosabua/maven-android-sdk-deployer.git
-  - mvn install -f maven-android-sdk-deployer/platforms/pom.xml -P 4.4 -P 2.1
-  - mvn install -f maven-android-sdk-deployer/extras/compatibility-v4/pom.xml
-  
 before_script:
   - chmod +x ci/wait_for_emulator.sh
   - ./ci/wait_for_emulator.sh
   - adb shell input keyevent 82 &
 
-script: "mvn -f app/pom.xml install"
+script: "./gradlew connectedAndroidTest"
