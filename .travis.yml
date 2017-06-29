@@ -1,5 +1,5 @@
 language: java
-jdk: oraclejdk7
+jdk: oraclejdk8
 env:
   matrix:
     - ANDROID_TARGET=android-7   ANDROID_SDKS=android-7,android-19 ANDROID_ABI=armeabi
