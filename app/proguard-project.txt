@@ -134,6 +134,9 @@
 }
 
 -dontwarn org.joda.time.**
+-dontnote org.joda.time.**
+
+-keep class com.google.protobuf.** { *; }
 
 # Yandex.Metrica
 -keep class com.yandex.metrica.** { *; }
