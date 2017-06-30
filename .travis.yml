@@ -20,7 +20,7 @@ before_install:
 
   # Create and start emulator
   - echo no | avdmanager create avd --force -n test -k $ANDROID_IMAGE
-  - emulator -avd test -no-skin -no-audio -no-window &
+  - ${ANDROID_HOME}/emulator/emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
   - chmod +x ci/wait_for_emulator.sh
